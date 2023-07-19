@@ -153,6 +153,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   playerWrapper: {fileID: 200010117}
+  popupSpawner: {fileID: 0}
 --- !u!4 &19515941
 Transform:
   m_ObjectHideFlags: 0

@@ -138,14 +138,14 @@ MonoBehaviour:
   cameraZoomSpeed: 15
   cameraZoomPower: 5
   movementEnabled: 1
-  jumpHeight: 4
+  jumpHeight: 0
   gravity: 10
   moveSpeed: 5
   moveUpKey: 119
   moveDownKey: 115
   moveLeftKey: 97
   moveRightKey: 100
-  jumpKey: 32
+  jumpKey: 0
   movementInputType: 0
   bodyWeightIK: 0.5
   headWeightIK: 1
