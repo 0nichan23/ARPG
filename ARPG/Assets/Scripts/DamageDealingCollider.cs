@@ -7,10 +7,14 @@ public class DamageDealingCollider : MonoBehaviour
     [SerializeField] private Character owner;
     [SerializeField] private int activeFrames;
     private AttackData currentAttack;
-
+    public bool blocked;
     private void OnEnable()
     {
         StartCoroutine(TurnOff());
+    }
+    private void OnDisable()
+    {
+        blocked = false;
     }
 
     private IEnumerator TurnOff()
@@ -34,7 +38,7 @@ public class DamageDealingCollider : MonoBehaviour
     {
         Debug.Log("collider hit");
         Character target = other.GetComponent<Character>();
-        if (ReferenceEquals(target, null) || ReferenceEquals(currentAttack, null))
+        if (blocked|| ReferenceEquals(target, null) || ReferenceEquals(currentAttack, null))
         {
             return;
         }

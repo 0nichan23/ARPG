@@ -13,4 +13,5 @@ MonoBehaviour:
   m_Name: PaladinS
   m_EditorClassIdentifier: 
   baseDamage: 30
+  coolDown: 10
   element: 5

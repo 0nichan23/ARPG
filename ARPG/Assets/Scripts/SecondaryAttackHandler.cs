@@ -9,7 +9,6 @@ public class SecondaryAttackHandler : MonoBehaviour
     private AttackData refAttack;
     private DamageDealingCollider secondaryCollider;
     public UnityEvent<AttackData> OnSecondaryAttackPerformed;
-    private int comboCounter;
     private float lastUsed;
 
 
