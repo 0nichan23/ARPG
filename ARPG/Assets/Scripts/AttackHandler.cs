@@ -1,12 +1,14 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
+using System.Collections.Generic;
 
 public class AttackHandler : MonoBehaviour
 {
 
     [SerializeField] private Animator anim;
-    [SerializeField, Range(1, 4)] private int comboLength;
+    [SerializeField] private List<AttackData> combo = new List<AttackData>();
+    [SerializeField] private DamageDealingCollider primaryCollider;
+    public UnityEvent<AttackData> OnAttackPerformed;
     private int comboCounter;
     private bool canAttack = true;
 
@@ -23,11 +25,15 @@ public class AttackHandler : MonoBehaviour
     private void Primary()
     {
         comboCounter++;
-        if (comboCounter >= comboLength)
+        if (comboCounter >= combo.Count)
         {
             comboCounter = 0;
         }
+        primaryCollider.CacheAttack(combo[comboCounter]);
+        OnAttackPerformed?.Invoke(combo[comboCounter]);
         anim.SetTrigger("Primary");
         anim.SetInteger("ComboIndex", comboCounter);
     }
 }
+
+

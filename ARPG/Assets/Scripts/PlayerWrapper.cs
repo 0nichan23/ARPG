@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerWrapper : MonoBehaviour
+public class PlayerWrapper : Character
 {
     [SerializeField] private AttackHandler playerAttackHandler;
 

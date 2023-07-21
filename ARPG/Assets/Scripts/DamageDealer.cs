@@ -38,7 +38,7 @@ public class DamageDealer : MonoBehaviour
     public float CritChance { get => critChance + basecritChance; }
     public float CritDamage { get => critDamage + basecritDamage; }
     public float PowerDamageMod { get => powerDamageMod + basepowerDamageMod; }
-    public float HitChance { get => hitChance + basehitChance; }
+    public float HitChance { get => hitChance + basehitChance + 1; }
     public int ArmorPenetration { get => Mathf.Clamp(armorPenetration, 0, 10);}
     public Character RefCharacter { get => refCharacter;}
 

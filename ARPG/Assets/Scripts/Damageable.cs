@@ -32,10 +32,16 @@ public class Damageable : MonoBehaviour
     public Character RefCharacter { get => refCharacter; }
 
 
-    public void IncreaseMaxHp(int amount)
+
+
+
+    public void IncreaseMaxHp(int amount, bool heal = false)
     {
         extraMaxHp += amount;
-        currentHp = MaxHp;
+        if (heal)
+        {
+            currentHp = MaxHp;
+        }
     }
 
     private float GetBaseDamageReduction(int toughness)
@@ -116,7 +122,7 @@ public class Damageable : MonoBehaviour
             }
             else
             {
-                GameManager.Instance.PopupSpawner.SpawnDamagePopup(transform.position, Mathf.RoundToInt( dmg.CalcFinalDamageMult()));
+                GameManager.Instance.PopupSpawner.SpawnDamagePopup(transform.position, Mathf.RoundToInt(dmg.CalcFinalDamageMult()));
             }
         }
         currentHp -= Mathf.RoundToInt(dmg.CalcFinalDamageMult());
