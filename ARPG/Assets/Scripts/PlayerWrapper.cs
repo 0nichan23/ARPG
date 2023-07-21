@@ -4,7 +4,13 @@ using UnityEngine;
 
 public class PlayerWrapper : Character
 {
-    [SerializeField] private AttackHandler playerAttackHandler;
+    [SerializeField] private PrimaryAttackHandler playerPrimaryAttackHandler;
 
-    public AttackHandler PlayerAttackHandler { get => playerAttackHandler;}
+    protected override void Awake()
+    {
+        base.Awake();
+        GameManager.Instance.CachePlayer(this);
+    }
+
+    public PrimaryAttackHandler PlayerPrimaryAttackHandler { get => playerPrimaryAttackHandler;}
 }

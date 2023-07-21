@@ -290,8 +290,8 @@ namespace BLINK.Controller
                     _displacement.x = input.x;
                     _displacement.z = input.y;
 
-                    _anim.SetLayerWeight(1, 1);
-                    _anim.SetLayerWeight(2, 0);
+                   /* _anim.SetLayerWeight(1, 1);
+                    _anim.SetLayerWeight(2, 0);*/
                 }
                 else
                 {
@@ -301,8 +301,8 @@ namespace BLINK.Controller
                         _displacement.z = 0.0f;
                     }
 
-                    _anim.SetLayerWeight(1, 0);
-                    _anim.SetLayerWeight(2, 1);
+                   /* _anim.SetLayerWeight(1, 0);
+                    _anim.SetLayerWeight(2, 1);*/
                 }
 
                 _lookAngle =

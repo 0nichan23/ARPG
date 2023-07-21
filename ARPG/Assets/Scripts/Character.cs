@@ -13,7 +13,7 @@ public class Character : MonoBehaviour
     public Effectable Effectable { get => effectable;  }
 
 
-    private void Awake()
+    protected virtual void Awake()
     {
         
     }
