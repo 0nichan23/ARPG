@@ -4,9 +4,11 @@ using UnityEngine;
 public class AttackData : ScriptableObject
 {
     [SerializeField] private int baseDamage;
+    [SerializeField] private int coolDown;
     [SerializeField] private Element element;
     public int BaseDamage { get => baseDamage; }
     public Element Element { get => element; }
+    public int CoolDown { get => coolDown; }
 }
 
 

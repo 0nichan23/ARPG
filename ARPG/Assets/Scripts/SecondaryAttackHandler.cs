@@ -10,16 +10,29 @@ public class SecondaryAttackHandler : MonoBehaviour
     private DamageDealingCollider secondaryCollider;
     public UnityEvent<AttackData> OnSecondaryAttackPerformed;
     private int comboCounter;
+    private float lastUsed;
+
 
     public void CacheWeaponData(AttackData attack, DamageDealingCollider collider = null)
     {
         refAttack = attack;
         secondaryCollider = collider;
+        lastUsed = attack.CoolDown * -1;
+    }
+
+
+    private bool CheckCoolDown()
+    {
+        if (Time.time - lastUsed >= refAttack.CoolDown)
+        {
+            return true;
+        }
+        return false;
     }
 
     void Update()
     {
-        if (GameManager.Instance.PlayerWrapper.CanAttack && Input.GetMouseButtonDown(1))
+        if (GameManager.Instance.PlayerWrapper.CanAttack && CheckCoolDown() &&Input.GetMouseButtonDown(1))
         {
             Secondary();
         }
@@ -32,6 +45,7 @@ public class SecondaryAttackHandler : MonoBehaviour
             secondaryCollider.CacheAttack(refAttack);
         }
         OnSecondaryAttackPerformed?.Invoke(refAttack);
+        lastUsed = Time.time;
         anim.SetTrigger("Secondary");
     }
 }

@@ -44,7 +44,13 @@ public class MaceAndShield : BasePlayerWeapon
         while (counter < secondaryEffectDuration)
         {
             SecondaryColliderOn();
+            Transform newvfx =  GameManager.Instance.ObjectPoolsHandler.PaladinSecondaryVFXPool.GetPooledObject();
+            newvfx.position = transform.position;
+            Transform parent = newvfx.parent;
+            newvfx.SetParent(transform);
+            newvfx.gameObject.SetActive(true);
             yield return new WaitForSeconds(1);
+            newvfx.SetParent(parent);
             counter++;
         }
     }
