@@ -1,21 +1,26 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
-using System.Collections.Generic;
 
 public class PrimaryAttackHandler : MonoBehaviour
 {
     [SerializeField] private Animator anim;
-    [SerializeField] private List<AttackData> primaryCombo = new List<AttackData>();
-    [SerializeField] private DamageDealingCollider primaryCollider;
-    public UnityEvent<AttackData> OnAttackPerformed;
+    private List<AttackData> primaryCombo = new List<AttackData>();
+    private DamageDealingCollider primaryCollider;
+    public UnityEvent<AttackData> OnPrimaryAttackPerformed;
     private int comboCounter;
-    private bool canAttack = true;
 
-    public bool CanAttack { get => canAttack; set => canAttack = value; }
+
+
+    public void CacheWeaponData(List<AttackData> combo, DamageDealingCollider collider = null)
+    {
+        primaryCombo = new List<AttackData>(combo);
+        primaryCollider = collider;
+    }
 
     void Update()
     {
-        if (CanAttack && Input.GetMouseButtonDown(0))
+        if (GameManager.Instance.PlayerWrapper.CanAttack && Input.GetMouseButtonDown(0))
         {
             Primary();
         }
@@ -23,15 +28,18 @@ public class PrimaryAttackHandler : MonoBehaviour
 
     private void Primary()
     {
-        comboCounter++;
         if (comboCounter >= primaryCombo.Count)
         {
             comboCounter = 0;
         }
-        primaryCollider.CacheAttack(primaryCombo[comboCounter]);
-        OnAttackPerformed?.Invoke(primaryCombo[comboCounter]);
+        if (!ReferenceEquals(primaryCollider, null))
+        {
+            primaryCollider.CacheAttack(primaryCombo[comboCounter]);
+        }
+        OnPrimaryAttackPerformed?.Invoke(primaryCombo[comboCounter]);
         anim.SetTrigger("Primary");
         anim.SetInteger("ComboIndex", comboCounter);
+        comboCounter++;
     }
 }
 
