@@ -13,4 +13,8 @@ MonoBehaviour:
   m_Name: PaldinP2
   m_EditorClassIdentifier: 
   baseDamage: 15
+  coolDown: 0
   element: 0
+  scalingAttribute: 0
+  scalingFactor: 0.8
+  manaCost: 0

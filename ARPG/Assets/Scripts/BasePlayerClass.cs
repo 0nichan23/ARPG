@@ -5,12 +5,15 @@ using UnityEngine.Events;
 public class BasePlayerClass : MonoBehaviour
 {
     [SerializeField] protected List<BasePlayerWeapon> weapons = new List<BasePlayerWeapon>();
+    [SerializeField] private StatSheet baseStats;
     protected BasePlayerWeapon currnetWeapon;
 
     public UnityEvent PrimaryUsed;
     public UnityEvent SecondaryUsed;
     public UnityEvent TertiaryUsed;
     public UnityEvent UtilityUsed;
+
+    public StatSheet BaseStats { get => baseStats;}
 
     //field for passive -> another day
 

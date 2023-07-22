@@ -13,121 +13,51 @@ public class DamageDealer : MonoBehaviour
 
     public UnityEvent<Damageable, DamageDealer> OnKill;
 
-
     private Character refCharacter;
 
+    public Character RefCharacter { get => refCharacter; }
 
-    //base stats depend on the active animal,
-    //the other stat is changed from passives, items, and team comps
-
-    private float critChance;
-    private float basecritChance;
-
-
-    private float critDamage;
-    private float basecritDamage;
-
-    private float powerDamageMod;
-    private float basepowerDamageMod;
-
-    private float hitChance;
-    private float basehitChance;
-
-    private int armorPenetration;//armor pen is only directly affected from passives and items, no base stats at all
-
-    public float CritChance { get => critChance + basecritChance; }
-    public float CritDamage { get => critDamage + basecritDamage; }
-    public float PowerDamageMod { get => powerDamageMod + basepowerDamageMod; }
-    public float HitChance { get => hitChance + basehitChance + 1; }
-    public int ArmorPenetration { get => Mathf.Clamp(armorPenetration, 0, 10);}
-    public Character RefCharacter { get => refCharacter;}
-
- 
-    private float GetDamageMod(int power)
+    public void SetUp(Character givenCharacter)
     {
-        float baseDamage = 1;
-        for (int i = 0; i <= power; i++)
+        refCharacter = givenCharacter;
+        OnHit.AddListener(ScaleDamage);
+        OnHit.AddListener(AddArmorPen);
+        OnHit.AddListener(AddMagicPen);
+        OnDealCritDamage.AddListener(AddCritDamage);
+    }
+
+    private void ScaleDamage(Damageable target, AttackData attack, DamageDealer dealer, DamageHandler dmg)
+    {
+        int flatMod = refCharacter.Stats.GetAttributeAttackValue(attack.ScalingFactor, attack.ScalingAttribute);
+        dmg.AddFlat(flatMod);
+    }
+
+    private void AddCritDamage(AttackData attack, Damageable target, DamageDealer dealer, DamageHandler dmg)
+    {
+        dmg.AddMod(refCharacter.Stats.CritDamage());
+    }
+
+    private void AddArmorPen(Damageable target, AttackData attack, DamageDealer dealer, DamageHandler dmg)
+    {
+        if (attack.Element == Element.Physical)
         {
-            baseDamage += 0.05f;
+            dmg.AddMod(refCharacter.Stats.ArmorPen(target.RefCharacter));
         }
-        return baseDamage;
     }
-
-    private float GetBaseCritDamage(int instinct)
+    private void AddMagicPen(Damageable target, AttackData attack, DamageDealer dealer, DamageHandler dmg)
     {
-        float baseDamage = 1.35f;
-        for (int i = 0; i < instinct; i++)
+        if (attack.Element != Element.Physical)
         {
-            baseDamage += 0.05f;
+            dmg.AddMod(refCharacter.Stats.MagicPen(target.RefCharacter));
         }
-        return baseDamage;
     }
-    private float GetBaseCritCahcne(int instinct)
+
+    public bool CheckForCritHit()
     {
-        float baseDamage = 0f;
-        for (int i = 0; i <= instinct; i++)
+        if (Random.Range(0,100) <= refCharacter.Stats.CritHit())
         {
-            baseDamage += 0.03f;
+            return true;
         }
-        return baseDamage;
-    }
-
-    private float GetBaseHitChanceMod(int instinct)
-    {
-        float baseChance = 0.75f; //base chance to hit is always 75% 
-        for (int i = 0; i <= instinct; i++)
-        {
-            baseChance += 0.05f;
-        }
-        return baseChance;
-    }
-
-    private float GetArmorPen(Damageable target)
-    {
-        float pen = 0f;
-        for (int i = 0; i < ArmorPenetration; i++)
-        {
-            pen += 0.05f; //can pen up to 50% armor
-        }
-        pen *= target.DamageReduction;
-        pen += 1;
-        return pen;
-    }
-
-    private void PowerDamageBoost(Damageable target, AttackData attack, DamageDealer dealer, DamageHandler dmg)
-    {
-        dmg.AddMod(PowerDamageMod);
-    }
-    private void CriticalDamageBoost(AttackData givenAttack, Damageable target, DamageDealer dealer, DamageHandler dmg)
-    {
-        dmg.AddMod(CritDamage);
-    }
-
-    private void ArmorPenBoost(Damageable target, AttackData givenAttack, DamageDealer dealer, DamageHandler dmg)
-    {
-        dmg.AddMod(GetArmorPen(target));
-    }
-  
-
-    public void AddArmorPenetration(int amount)
-    {
-        armorPenetration += amount;
-    }
-
-    public void AddCritChance(float amount)
-    {
-        critChance += amount;
-    }
-    public void AddCritDamage(float amount)
-    {
-        critDamage += amount;
-    }
-    public void AddAttackDamage(float amount)
-    {
-        powerDamageMod += amount;
-    }
-    public void AddHitChance(float amount)
-    {
-        hitChance += amount;
+        return false;
     }
 }

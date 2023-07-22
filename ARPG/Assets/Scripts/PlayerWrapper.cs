@@ -20,6 +20,14 @@ public class PlayerWrapper : Character
     {
         base.Awake();
         GameManager.Instance.CachePlayer(this);
+        Stats.SetBaseStats(currentClass.BaseStats);
+    }
+
+    [ContextMenu("test stats")]
+    private void TestStats()
+    {
+        Stats.AddCritHit(150);
+        Stats.AddCDR(150);
     }
 
 }

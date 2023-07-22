@@ -22,7 +22,7 @@ public class SecondaryAttackHandler : MonoBehaviour
 
     private bool CheckCoolDown()
     {
-        if (Time.time - lastUsed >= refAttack.CoolDown)
+        if (Time.time - lastUsed >= (refAttack.CoolDown * GameManager.Instance.PlayerWrapper.Stats.CDR()))
         {
             return true;
         }

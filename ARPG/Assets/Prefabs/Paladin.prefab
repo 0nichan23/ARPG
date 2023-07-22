@@ -250,6 +250,8 @@ GameObject:
   - component: {fileID: 1047378392}
   - component: {fileID: 1047378393}
   - component: {fileID: 1047378403}
+  - component: {fileID: 1047378410}
+  - component: {fileID: 4777659755737783039}
   m_Layer: 6
   m_Name: Paladin
   m_TagString: Player
@@ -357,7 +359,7 @@ MonoBehaviour:
   bodyWeightIK: 0.5
   headWeightIK: 1
   dampSmoothTimeIK: 0.4
-  dampSmoothTimeRotation: 0.25
+  dampSmoothTimeRotation: 0.1
   animatorSmoothTime: 0.15
 --- !u!114 &6815882170506286207
 MonoBehaviour:
@@ -390,9 +392,10 @@ MonoBehaviour:
   damageable: {fileID: 200010125}
   damageDealer: {fileID: 200010124}
   effectable: {fileID: 200010123}
+  stats: {fileID: 4777659755737783039}
   playerPrimaryAttackHandler: {fileID: 6815882170506286207}
   playerSecondaryAttackHandler: {fileID: 1047378403}
-  playerUtilityHandler: {fileID: 0}
+  playerUtilityHandler: {fileID: 1047378410}
   currentClass: {fileID: 1047378393}
   playerAnim: {fileID: 6815882170506286201}
   CanAttack: 1
@@ -510,7 +513,7 @@ MonoBehaviour:
   animController: {fileID: 9100000, guid: 8639fb2008972934d88f007413e5fa82, type: 2}
   PrimaryCollider: {fileID: 1357637617}
   SecondarCollider: {fileID: 962821499}
-  shieldUpAnim: {fileID: 0}
+  utilityCollider: {fileID: 1361216882}
   secondaryEffectDuration: 5
 --- !u!114 &1047378393
 MonoBehaviour:
@@ -526,6 +529,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   weapons:
   - {fileID: 1047378392}
+  baseStats: {fileID: 11400000, guid: c7cd762ca9eae4e4aa026a3786102809, type: 2}
   PrimaryUsed:
     m_PersistentCalls:
       m_Calls: []
@@ -554,6 +558,38 @@ MonoBehaviour:
   OnSecondaryAttackPerformed:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &1047378410
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815882170506286213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7e000fe044133c14daa4dfd9af59fc91, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  coolDown: 0
+  anim: {fileID: 6815882170506286201}
+  OnUtilityPerformed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnUtilityUp:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &4777659755737783039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815882170506286213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 872f4e5e8c6f27f418c7f9b07a3efb24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &6815882169442142371
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -599,23 +635,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 438816, guid: 9a3460fac6eccf446a920db0922d6fae, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0
+      value: 0.00000006332991
       objectReference: {fileID: 0}
     - target: {fileID: 438816, guid: 9a3460fac6eccf446a920db0922d6fae, type: 3}
       propertyPath: m_LocalRotation.x
-      value: 0
+      value: 0.000000027779594
       objectReference: {fileID: 0}
     - target: {fileID: 438816, guid: 9a3460fac6eccf446a920db0922d6fae, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.7071068
+      value: 0.85464686
       objectReference: {fileID: 0}
     - target: {fileID: 438816, guid: 9a3460fac6eccf446a920db0922d6fae, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.7071068
+      value: 0.5192098
       objectReference: {fileID: 0}
     - target: {fileID: 438816, guid: 9a3460fac6eccf446a920db0922d6fae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
-      value: -90
+      value: -62.559
       objectReference: {fileID: 0}
     - target: {fileID: 438816, guid: 9a3460fac6eccf446a920db0922d6fae, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y

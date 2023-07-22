@@ -6,6 +6,7 @@ public class DamageHandler
 {
     [SerializeField] private float baseAmount;
     private List<float> mods = new List<float>();
+    private List<int> flatMods = new List<int>();
     public List<float> Mods { get => mods; }
     public float BaseAmount { get => baseAmount; set => baseAmount = value; }
 
@@ -13,10 +14,15 @@ public class DamageHandler
     {
         mods.Add(mod);
     }
+    public void AddFlat(int mod)
+    {
+        flatMods.Add(mod);
+    }
 
     public void ClearMods()
     {
         mods.Clear();
+        flatMods.Clear();
     }
 
     public float CalcFinalDamageMult()
@@ -37,6 +43,14 @@ public class DamageHandler
             {
                 amount -= BaseAmount - (item * BaseAmount);//reduce damage
             }
+        }
+        foreach (var item in flatMods)
+        {
+            if (item < 0)
+            {
+                Debug.LogError("ey");
+            }
+            amount += item;
         }
         return Mathf.Clamp(amount, 0 ,amount);
     }

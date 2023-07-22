@@ -7,7 +7,6 @@ public class Damageable : MonoBehaviour
 
     [SerializeField] private float currentHp;
     [SerializeField] private float maxHp;
-    private float extraMaxHp;
     private Character refCharacter;
 
     public UnityEvent<AttackData, Damageable, DamageDealer, DamageHandler> OnGetHit;
@@ -18,84 +17,51 @@ public class Damageable : MonoBehaviour
     public UnityEvent<DamageHandler> OnHeal;
     public UnityEvent OnHealGFX;
 
-    private float basedamageReduction;
-    private float damageReduction;
-
-    private float basedodgeChance;
-    private float dodgeChance;
-
     public bool EmitPopups;
-    public float MaxHp { get => maxHp + extraMaxHp; }
+    public float MaxHp { get => maxHp; }
     public float CurrentHp { get => currentHp; }
-    public float DamageReduction { get => Mathf.Clamp(basedamageReduction + damageReduction, 0.1f, 1f); }
-    public float DodgeChance { get => Mathf.Clamp(basedodgeChance + dodgeChance, 0f, 0.9f); }
     public Character RefCharacter { get => refCharacter; }
 
+    public void SetUp(Character givenCharacter)
+    {
+        refCharacter = givenCharacter;
+        OnGetHit.AddListener(ApplyResistance);
+        OnHeal.AddListener(ApplyHealPower);
+    }
 
+    private void ApplyResistance(AttackData attack, Damageable target, DamageDealer dealer, DamageHandler dmg)
+    {
+        if (attack.Element == Element.Physical)
+        {
+            dmg.AddMod(refCharacter.Stats.Armor());
+        }
+        else
+        {
+            dmg.AddMod(refCharacter.Stats.MagicResist());
+        }
+    }
 
+    private void ApplyHealPower(DamageHandler dmg)
+    {
+        dmg.AddMod(RefCharacter.Stats.HealPower());
+    }
 
 
     public void IncreaseMaxHp(int amount, bool heal = false)
     {
-        extraMaxHp += amount;
+        maxHp += amount;
         if (heal)
         {
             currentHp = MaxHp;
         }
     }
 
-    private float GetBaseDamageReduction(int toughness)
-    {
-        float baseAmount = 0f;
-        for (int i = 0; i < toughness; i++)
-        {
-            baseAmount += 0.05f;//a total of 50% damage reduction if the score is 10
-        }
-        return 1 - baseAmount;
-    }
-
-    private float GetBaseDodgeChance(int speed)
-    {
-        float baseAmount = 0f;
-        for (int i = 0; i < speed; i++)
-        {
-            baseAmount += 0.03f;//a total of 30% chance to dodge if speed is at 10
-        }
-        return baseAmount;
-    }
-
-    public void AddDodgeChance(float amount)
-    {
-        dodgeChance += amount;
-    }
-    public void AddDamageReduction(float amount)
-    {
-        damageReduction -= amount;
-    }
-    private void DamageReductionBoost(AttackData givenAttack, Damageable target, DamageDealer dealer, DamageHandler dmg)
-    {
-        dmg.AddMod(DamageReduction);
-    }
-
-    public void CacheEffectable(Effectable givenEffectable)
-    {
-        effectable = givenEffectable;
-    }
-
     public void GetHit(AttackData attack, DamageDealer dealer)
     {
-        if (!CheckForHit(dealer.HitChance))
-        {
-            if (EmitPopups)
-            {
-                GameManager.Instance.PopupSpawner.SpawnMissPopup(transform.position);
-            }
-            return;
-        }
         DamageHandler dmg = new DamageHandler() { BaseAmount = attack.BaseDamage };
         OnGetHit?.Invoke(attack, this, dealer, dmg);
         dealer.OnHit?.Invoke(this, attack, dealer, dmg);
-        if (CheckForCritHit(dealer.CritChance))
+        if (dealer.CheckForCritHit())
         {
             TakeDamage(attack, dealer, dmg, true);
         }
@@ -103,6 +69,7 @@ public class Damageable : MonoBehaviour
         {
             TakeDamage(attack, dealer, dmg);
         }
+
     }
 
     public void TakeDamage(AttackData attack, DamageDealer dealer, DamageHandler dmg, bool critHit = false)
@@ -118,11 +85,11 @@ public class Damageable : MonoBehaviour
         {
             if (critHit)
             {
-                GameManager.Instance.PopupSpawner.SpawnCritDamagePopup(transform.position, Mathf.RoundToInt(dmg.CalcFinalDamageMult()));
+                GameManager.Instance.PopupSpawner.SpawnCritDamagePopup(transform.position, Mathf.RoundToInt(dmg.CalcFinalDamageMult()), attack.Element);
             }
             else
             {
-                GameManager.Instance.PopupSpawner.SpawnDamagePopup(transform.position, Mathf.RoundToInt(dmg.CalcFinalDamageMult()));
+                GameManager.Instance.PopupSpawner.SpawnDamagePopup(transform.position, Mathf.RoundToInt(dmg.CalcFinalDamageMult()), attack.Element);
             }
         }
         currentHp -= Mathf.RoundToInt(dmg.CalcFinalDamageMult());
@@ -137,12 +104,12 @@ public class Damageable : MonoBehaviour
 
     }
 
-    public void TakeTrueDamage(float fixedAmount, DamageDealer dealer = null)
+    public void TakeTrueDamage(float fixedAmount, Element element, DamageDealer dealer = null)
     {
         currentHp -= Mathf.RoundToInt(fixedAmount);
         if (EmitPopups)
         {
-            GameManager.Instance.PopupSpawner.SpawnDamagePopup(transform.position, Mathf.RoundToInt(fixedAmount));
+            GameManager.Instance.PopupSpawner.SpawnDamagePopup(transform.position, Mathf.RoundToInt(fixedAmount), element);
         }
         if (currentHp <= 0)
         {
@@ -154,22 +121,6 @@ public class Damageable : MonoBehaviour
         }
         ClampHp();
         OnTakeDamageGFX?.Invoke();
-    }
-
-    /*multihits occur only after an attack hit in the first place, they can miss and deal 
-    flat damage equal to the damage of the attack that triggered the effect.
-    multihits CANNOT trigger any events at all*/
-    public void GetMultiHit(DamageDealer dealer, float totalDamage)
-    {
-        if (!CheckForHit(dealer.HitChance))
-        {
-            if (EmitPopups)
-            {
-                GameManager.Instance.PopupSpawner.SpawnMissPopup(transform.position);
-            }
-            return;
-        }
-        TakeTrueDamage(totalDamage, dealer);
     }
 
     public void HealTrueDamage(float fixedAmount)
@@ -193,33 +144,12 @@ public class Damageable : MonoBehaviour
         currentHp += givenDamage.CalcFinalDamageMult();
         if (EmitPopups)
         {
-            GameManager.Instance.PopupSpawner.SpawnDamagePopup(transform.position, Mathf.RoundToInt(givenDamage.CalcFinalDamageMult()));
+            GameManager.Instance.PopupSpawner.SpawnHealPopup(transform.position, Mathf.RoundToInt(givenDamage.CalcFinalDamageMult()));
         }
         ClampHp();
         OnHealGFX?.Invoke();
     }
 
-    private bool CheckForCritHit(float chance)
-    {
-        float c = chance * 100;
-        if (Random.Range(0, 100) <= c)
-        {
-            return true;
-        }
-        return false;
-    }
 
-    private bool CheckForHit(float chance)
-    {
-        float c = chance * 100;
-        float d = DodgeChance * 100;
-        c -= d;
-        c = Mathf.Clamp(c, 1, 100); //there is always at least 1% chance to hit the target
-        if (Random.Range(0, 100) <= c)
-        {
-            return true;
-        }
-        return false;
-    }
 }
 

@@ -15,3 +15,6 @@ MonoBehaviour:
   baseDamage: 30
   coolDown: 10
   element: 5
+  scalingAttribute: 3
+  scalingFactor: 2.5
+  manaCost: 35

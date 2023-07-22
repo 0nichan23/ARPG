@@ -36,7 +36,6 @@ public class DamageDealingCollider : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        Debug.Log("collider hit");
         Character target = other.GetComponent<Character>();
         if (blocked|| ReferenceEquals(target, null) || ReferenceEquals(currentAttack, null))
         {
