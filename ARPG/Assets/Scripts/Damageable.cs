@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -5,28 +6,32 @@ public class Damageable : MonoBehaviour
 {
     private Effectable effectable;
 
-    [SerializeField] private float currentHp;
-    [SerializeField] private float maxHp;
+    [SerializeField] private int currentHp;
+    [SerializeField] private int maxHp;
     private Character refCharacter;
 
     public UnityEvent<AttackData, Damageable, DamageDealer, DamageHandler> OnGetHit;
     public UnityEvent<AttackData, Damageable, DamageDealer, DamageHandler> OnTakeCriticalDamage;
     public UnityEvent<AttackData, Damageable, DamageDealer, DamageHandler> OnTakeDamageFinal;
+    public UnityEvent<int, int> OnValueChanged;
     public UnityEvent OnDeath;
     public UnityEvent OnTakeDamageGFX;
     public UnityEvent<DamageHandler> OnHeal;
     public UnityEvent OnHealGFX;
 
     public bool EmitPopups;
-    public float MaxHp { get => maxHp; }
-    public float CurrentHp { get => currentHp; }
+    public int MaxHp { get => maxHp; }
+    public int CurrentHp { get => currentHp; }
     public Character RefCharacter { get => refCharacter; }
 
     public void SetUp(Character givenCharacter)
     {
         refCharacter = givenCharacter;
+        maxHp = givenCharacter.Stats.BaseMaxHealth + Mathf.RoundToInt(givenCharacter.Stats.MaxHealth() * givenCharacter.Stats.BaseMaxHealth);
+        currentHp = maxHp;
         OnGetHit.AddListener(ApplyResistance);
         OnHeal.AddListener(ApplyHealPower);
+        StartCoroutine(RegenHealth());
     }
 
     private void ApplyResistance(AttackData attack, Damageable target, DamageDealer dealer, DamageHandler dmg)
@@ -45,6 +50,7 @@ public class Damageable : MonoBehaviour
     {
         dmg.AddMod(RefCharacter.Stats.HealPower());
     }
+
 
 
     public void IncreaseMaxHp(int amount, bool heal = false)
@@ -123,7 +129,7 @@ public class Damageable : MonoBehaviour
         OnTakeDamageGFX?.Invoke();
     }
 
-    public void HealTrueDamage(float fixedAmount)
+    public void HealTrueDamage(int fixedAmount)
     {
         currentHp += fixedAmount;
         if (EmitPopups)
@@ -135,13 +141,15 @@ public class Damageable : MonoBehaviour
     }
     private void ClampHp()
     {
+        maxHp = refCharacter.Stats.BaseMaxHealth + Mathf.RoundToInt(refCharacter.Stats.MaxHealth() * refCharacter.Stats.BaseMaxHealth);
         currentHp = Mathf.Clamp(currentHp, 0, MaxHp);
+        OnValueChanged?.Invoke(maxHp, currentHp);
     }
 
     public void Heal(DamageHandler givenDamage)
     {
         OnHeal?.Invoke(givenDamage);
-        currentHp += givenDamage.CalcFinalDamageMult();
+        currentHp += Mathf.RoundToInt(givenDamage.CalcFinalDamageMult());
         if (EmitPopups)
         {
             GameManager.Instance.PopupSpawner.SpawnHealPopup(transform.position, Mathf.RoundToInt(givenDamage.CalcFinalDamageMult()));
@@ -150,6 +158,19 @@ public class Damageable : MonoBehaviour
         OnHealGFX?.Invoke();
     }
 
+    private void RegenHp()
+    {
+        currentHp += Mathf.RoundToInt(MaxHp * refCharacter.Stats.HealthRegen());
+        ClampHp();
+    }
 
+    private IEnumerator RegenHealth()
+    {
+        while (gameObject.activeInHierarchy)
+        {
+            RegenHp();
+            yield return new WaitForSeconds(1);
+        }
+    }
 }
 

@@ -39,6 +39,11 @@ public class TertiaryAttackHandler : MonoBehaviour
 
     private void Tertiary()
     {
+        if (!GameManager.Instance.PlayerWrapper.ManaHandler.CheckManaAvailable
+           (Mathf.RoundToInt(refAttack.ManaCost * GameManager.Instance.PlayerWrapper.Stats.ManaCostDiscount())))
+        {
+            return;
+        }
         if (!ReferenceEquals(secondaryCollider, null))
         {
             secondaryCollider.CacheAttack(refAttack);

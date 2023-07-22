@@ -4,6 +4,8 @@ public class CharacterStats : MonoBehaviour
 {
     //stats are between 1 and 100 (with a base stat of 10 at level 10)
 
+    [SerializeField] private int baseMaxHealth;
+    [SerializeField] private int baseMaxMana;
     private BaseStat str;
     private BaseStat dex;
     private BaseStat inte;
@@ -17,6 +19,9 @@ public class CharacterStats : MonoBehaviour
     public int FTH => fth.Value;
     public int WTS => wts.Value;
     public int RGN => rgn.Value;
+
+    public int BaseMaxHealth { get => baseMaxHealth; }
+    public int BaseMaxMana { get => baseMaxMana; }
 
     private int staggerChance;
     private int armorPen;//
