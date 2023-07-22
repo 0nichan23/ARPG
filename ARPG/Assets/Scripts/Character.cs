@@ -18,5 +18,6 @@ public class Character : MonoBehaviour
     {
         damageable.SetUp(this);
         DamageDealer.SetUp(this);
+        effectable.CahceOwner(this);
     }
 }

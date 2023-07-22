@@ -6,7 +6,10 @@ public class MaceAndShield : BasePlayerWeapon
     [SerializeField] private DamageDealingCollider PrimaryCollider;
     [SerializeField] private DamageDealingCollider SecondarCollider;
     [SerializeField] private ShieldCollider utilityCollider;
-    [SerializeField] private int secondaryEffectDuration;
+    [SerializeField, Range(1,10)] private int secondaryEffectDuration;
+    [SerializeField, Range(0f, 1f)] private float SecondaryBuffValue;
+    [SerializeField, Range(1,10)] private int TertiaryBuffDuration;
+    [SerializeField, Range(0f,1f)] private float TertiaryBuffValue;
     public override void Primary()
     {
         base.Primary();
@@ -34,15 +37,24 @@ public class MaceAndShield : BasePlayerWeapon
     {
         GameManager.Instance.PlayerWrapper.PlayerPrimaryAttackHandler.CacheWeaponData(PrimaryCombo, PrimaryCollider);
         GameManager.Instance.PlayerWrapper.PlayerSecondaryAttackHandler.CacheWeaponData(secondaryAttack, SecondarCollider);
+        GameManager.Instance.PlayerWrapper.PlayerTertiaryAttackHandler.CacheWeaponData(tertiaryAttack);
         GameManager.Instance.PlayerWrapper.PlayerUtilityHandler.CacheWeaponData();
         GameManager.Instance.PlayerWrapper.PlayerUtilityHandler.OnUtilityPerformed.AddListener(UtilityOn);
         GameManager.Instance.PlayerWrapper.PlayerUtilityHandler.OnUtilityUp.AddListener(UtilityOff);
-        //add secondary later in this case 
+    }
+
+
+    public override void Tertiary()
+    {
+        base.Tertiary();
+        GameManager.Instance.PlayerWrapper.Damageable.Heal(new DamageHandler() { BaseAmount = tertiaryAttack.BaseDamage });
+        GameManager.Instance.PlayerWrapper.Effectable.AddStatus(new DamageBuff(TertiaryBuffDuration, TertiaryBuffValue), GameManager.Instance.PlayerWrapper.DamageDealer);
     }
 
     private IEnumerator SecondaryEffect()
     {
         int counter = 0;
+        GameManager.Instance.PlayerWrapper.Effectable.AddStatus(new DefenseBuff(secondaryEffectDuration, SecondaryBuffValue), GameManager.Instance.PlayerWrapper.DamageDealer);
         while (counter < secondaryEffectDuration)
         {
             SecondaryColliderOn();

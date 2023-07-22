@@ -20,7 +20,7 @@ public class PrimaryAttackHandler : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance.PlayerWrapper.CanAttack && Input.GetMouseButtonDown(0))
+        if (GameManager.Instance.PlayerWrapper.CanAttack && Input.GetMouseButton(0))
         {
             Primary();
         }

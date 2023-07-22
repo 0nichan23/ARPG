@@ -6,6 +6,7 @@ public class BasePlayerClass : MonoBehaviour
 {
     [SerializeField] protected List<BasePlayerWeapon> weapons = new List<BasePlayerWeapon>();
     [SerializeField] private StatSheet baseStats;
+    [SerializeField] private ClassPassive passive;
     protected BasePlayerWeapon currnetWeapon;
 
     public UnityEvent PrimaryUsed;
@@ -19,6 +20,8 @@ public class BasePlayerClass : MonoBehaviour
 
     private void Start()
     {
+        passive.CacheOwner(GameManager.Instance.PlayerWrapper);
+        passive.SubscribePassive();
         currnetWeapon = weapons[0];
         ResetEvents();
     }

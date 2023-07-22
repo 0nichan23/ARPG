@@ -13,6 +13,7 @@ public class Effectable : MonoBehaviour
     private Character owner;
 
     public List<StatusEffect> ActiveEffects { get => activeEffects; }
+    public Character Owner { get => owner; }
 
     public void CahceOwner(Character givenCharacter)
     {

@@ -1,5 +1,66 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &246710795
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 246710798}
+  - component: {fileID: 246710797}
+  - component: {fileID: 246710796}
+  m_Layer: 8
+  m_Name: PassiveCollider
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 0
+--- !u!4 &246710798
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 246710795}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 1.112, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6815882170506286200}
+  m_RootOrder: 4
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!135 &246710797
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 246710795}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 3
+  m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &246710796
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 246710795}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 18058afdbf0212148845519f996da1ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  owner: {fileID: 6815882170506286206}
+  activeFrames: 10
+  blocked: 0
 --- !u!1 &962821498
 GameObject:
   m_ObjectHideFlags: 0
@@ -179,7 +240,7 @@ Rigidbody:
   serializedVersion: 2
   m_Mass: 1
   m_Drag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_UseGravity: 0
   m_IsKinematic: 0
   m_Interpolate: 0
@@ -252,6 +313,8 @@ GameObject:
   - component: {fileID: 1047378403}
   - component: {fileID: 1047378410}
   - component: {fileID: 4777659755737783039}
+  - component: {fileID: 1583933249}
+  - component: {fileID: 1583933250}
   m_Layer: 6
   m_Name: Paladin
   m_TagString: Player
@@ -275,6 +338,7 @@ Transform:
   - {fileID: 1357637619}
   - {fileID: 962821501}
   - {fileID: 1361216881}
+  - {fileID: 246710798}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 180, z: 0}
@@ -395,6 +459,7 @@ MonoBehaviour:
   stats: {fileID: 4777659755737783039}
   playerPrimaryAttackHandler: {fileID: 6815882170506286207}
   playerSecondaryAttackHandler: {fileID: 1047378403}
+  playerTertiaryAttackHandler: {fileID: 1583933249}
   playerUtilityHandler: {fileID: 1047378410}
   currentClass: {fileID: 1047378393}
   playerAnim: {fileID: 6815882170506286201}
@@ -479,7 +544,7 @@ MonoBehaviour:
   OnHealGFX:
     m_PersistentCalls:
       m_Calls: []
-  EmitPopups: 0
+  EmitPopups: 1
 --- !u!114 &200010126
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -509,12 +574,15 @@ MonoBehaviour:
   - {fileID: 11400000, guid: c513bc49df7c5bd4c9fba9d8c61dd9fa, type: 2}
   - {fileID: 11400000, guid: 797eb7279633bce4996915233cb0e34e, type: 2}
   secondaryAttack: {fileID: 11400000, guid: 04fa066fdad035b4ea23fe01cad0ccac, type: 2}
-  tertiaryAttack: {fileID: 0}
+  tertiaryAttack: {fileID: 11400000, guid: 5a7edb7957150ad43b5f43c712b1db38, type: 2}
   animController: {fileID: 9100000, guid: 8639fb2008972934d88f007413e5fa82, type: 2}
   PrimaryCollider: {fileID: 1357637617}
   SecondarCollider: {fileID: 962821499}
   utilityCollider: {fileID: 1361216882}
   secondaryEffectDuration: 5
+  SecondaryBuffValue: 0.35
+  TertiaryBuffDuration: 7
+  TertiaryBuffValue: 0.25
 --- !u!114 &1047378393
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -530,6 +598,7 @@ MonoBehaviour:
   weapons:
   - {fileID: 1047378392}
   baseStats: {fileID: 11400000, guid: c7cd762ca9eae4e4aa026a3786102809, type: 2}
+  passive: {fileID: 1583933250}
   PrimaryUsed:
     m_PersistentCalls:
       m_Calls: []
@@ -590,6 +659,36 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 872f4e5e8c6f27f418c7f9b07a3efb24, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1583933249
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815882170506286213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3d19f49b5d410bb479094e9cf0d859cb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 6815882170506286201}
+  OnTertiaryAttackPerformed:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &1583933250
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815882170506286213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a604890b086d2fa45a3ae53dce77d034, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  blastCollider: {fileID: 246710796}
+  blastAttack: {fileID: 11400000, guid: 5adc31d9b710d0d4fb9dc3058b194242, type: 2}
 --- !u!1001 &6815882169442142371
 PrefabInstance:
   m_ObjectHideFlags: 0
