@@ -70,8 +70,8 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1357637619}
-  - component: {fileID: 1357637618}
   - component: {fileID: 1357637617}
+  - component: {fileID: 1296356740}
   m_Layer: 8
   m_Name: PrimaryDamageCollider
   m_TagString: Untagged
@@ -94,19 +94,6 @@ Transform:
   m_Father: {fileID: 6815882170506286200}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!135 &1357637618
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1357637616}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.7
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &1357637617
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -122,6 +109,19 @@ MonoBehaviour:
   owner: {fileID: 6815882170506286206}
   activeFrames: 10
   blocked: 0
+--- !u!65 &1296356740
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1357637616}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Size: {x: 1.5964576, y: 1.2241364, z: 0.6370949}
+  m_Center: {x: 0.045905292, y: -0.109036446, z: -0.13261703}
 --- !u!1 &1361216880
 GameObject:
   m_ObjectHideFlags: 0
@@ -339,7 +339,7 @@ MonoBehaviour:
   cameraDampTime: 0.1
   offsetDampTime: 0.25
   maxOffset: 0.3
-  isDraggable: 1
+  isDraggable: 0
   minCameraHeight: 3
   maxCameraHeight: 15
   minCameraVertical: 0.5
@@ -356,9 +356,9 @@ MonoBehaviour:
   moveRightKey: 100
   jumpKey: 0
   movementInputType: 0
-  bodyWeightIK: 0.5
-  headWeightIK: 1
-  dampSmoothTimeIK: 0.4
+  bodyWeightIK: 0.1
+  headWeightIK: 0.1
+  dampSmoothTimeIK: 0.1
   dampSmoothTimeRotation: 0.1
   animatorSmoothTime: 0.15
 --- !u!114 &6815882170506286207

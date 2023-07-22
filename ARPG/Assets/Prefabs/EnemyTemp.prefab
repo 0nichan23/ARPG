@@ -17,6 +17,7 @@ GameObject:
   - component: {fileID: 8444432997446306275}
   - component: {fileID: 8444432997446306272}
   - component: {fileID: 8444432997446306280}
+  - component: {fileID: 534226687}
   m_Layer: 7
   m_Name: EnemyTemp
   m_TagString: Untagged
@@ -67,7 +68,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 10303, guid: 0000000000000000f000000000000000, type: 0}
+  - {fileID: 2100000, guid: fe8e8fb24bb15054b818a6adb249458b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -118,6 +119,7 @@ MonoBehaviour:
   damageable: {fileID: 8444432997446306274}
   damageDealer: {fileID: 8444432997446306275}
   effectable: {fileID: 8444432997446306272}
+  stats: {fileID: 534226687}
 --- !u!114 &8444432997446306274
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -217,3 +219,15 @@ CharacterController:
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &534226687
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8444432997446306273}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 872f4e5e8c6f27f418c7f9b07a3efb24, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 

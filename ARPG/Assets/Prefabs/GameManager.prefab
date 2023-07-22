@@ -1,5 +1,98 @@
 %YAML 1.1
 %TAG !u! tag:unity3d.com,2011:
+--- !u!1 &196788077
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 196788078}
+  - component: {fileID: 196788079}
+  m_Layer: 0
+  m_Name: PaladinSecondaryVFXPool
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &196788078
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 196788077}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 711891047}
+  m_RootOrder: 0
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &196788079
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 196788077}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 31ac26d76da17e84c81eb290b65d37bc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  pooledObjects: []
+  PrefabToPool: {fileID: 4294621934706682, guid: 0b513db03af337b429a8566086f37989, type: 3}
+  NumToPool: 5
+--- !u!1 &711891046
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 711891047}
+  - component: {fileID: 711891048}
+  m_Layer: 0
+  m_Name: ObjectPoolHandler
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &711891047
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711891046}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 196788078}
+  m_Father: {fileID: 4289899901517128301}
+  m_RootOrder: 1
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &711891048
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 711891046}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c83537170e50094d99e85aed6f8a044, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  paladinSecondaryVFXPool: {fileID: 196788079}
 --- !u!1 &4289899900619000745
 GameObject:
   m_ObjectHideFlags: 0
@@ -47,6 +140,21 @@ MonoBehaviour:
   damagePopPrefab: {fileID: 2919341200546557349, guid: 9f2e81df727c60b498bb6aad7c545afe, type: 3}
   missPopup: {fileID: 2919341200546557349, guid: 9f2e81df727c60b498bb6aad7c545afe, type: 3}
   criticalDamagePopPrefab: {fileID: 2919341200546557349, guid: 9f2e81df727c60b498bb6aad7c545afe, type: 3}
+  elementColors:
+  - element: 0
+    color: {r: 1, g: 1, b: 1, a: 1}
+  - element: 1
+    color: {r: 0.8773585, g: 0.41173354, b: 0.16967781, a: 1}
+  - element: 2
+    color: {r: 0.4151354, g: 0.3066038, b: 1, a: 1}
+  - element: 3
+    color: {r: 0.3460751, g: 0.8366712, b: 0.9528302, a: 1}
+  - element: 4
+    color: {r: 0.39631543, g: 0.6886792, b: 0.23713954, a: 1}
+  - element: 5
+    color: {r: 0.90513504, g: 0.9056604, b: 0.49127805, a: 1}
+  - element: 6
+    color: {r: 0.2143183, g: 0.12130651, b: 0.5471698, a: 1}
 --- !u!1 &4289899901517128299
 GameObject:
   m_ObjectHideFlags: 0
@@ -77,6 +185,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4289899900619000746}
+  - {fileID: 711891047}
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -94,3 +203,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   playerWrapper: {fileID: 0}
   popupSpawner: {fileID: 4289899900619000747}
+  objectPoolsHandler: {fileID: 711891048}
