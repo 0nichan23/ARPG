@@ -9,6 +9,13 @@ public class AttackData : ScriptableObject
     [SerializeField] private Attribute scalingAttribute;
     [SerializeField, Range(0.1f, 10f)] private float scalingFactor;
     [SerializeField] private int manaCost;
+
+
+    public void Imbue(Element givenElement)
+    {
+        element = givenElement;
+    }
+
     public int BaseDamage { get => baseDamage; }
     public Element Element { get => element; }
     public int CoolDown { get => coolDown; }

@@ -308,9 +308,8 @@ namespace BLINK.Controller
                 _lookAngle =
                     Mathf.Atan2(transform.position.z - point.z, point.x - transform.position.x) * Mathf.Rad2Deg + 90;
 
-                if (input != Vector2.zero)
-                {
-                    float deltaAngle = Mathf.DeltaAngle(_lookAngle, _forwardF);
+               
+                float deltaAngle = Mathf.DeltaAngle(_lookAngle, _forwardF);
                     float differenceAngle = Mathf.Round(deltaAngle / 45) * 45;
 
                     _targetRotationAngle = _forwardF - differenceAngle;
@@ -318,10 +317,19 @@ namespace BLINK.Controller
                     float horizontal = Mathf.Round(Mathf.Sin(differenceAngle * Mathf.Deg2Rad));
                     float vertical = Mathf.Round(Mathf.Cos(differenceAngle * Mathf.Deg2Rad));
 
+                if (input == Vector2.zero)
+                {
+                    _anim.SetFloat(HorizontalHash, 0, animatorSmoothTime, Time.deltaTime);
+                    _anim.SetFloat(VerticalHash, 0, animatorSmoothTime, Time.deltaTime);
+                }
+                else
+                {
                     _anim.SetFloat(HorizontalHash, horizontal, animatorSmoothTime, Time.deltaTime);
                     _anim.SetFloat(VerticalHash, vertical, animatorSmoothTime, Time.deltaTime);
                 }
-                else
+
+                // }
+                /*else
                 {
                     float deltaAngle = Mathf.DeltaAngle(_forwardF, _lookAngle);
 
@@ -339,7 +347,7 @@ namespace BLINK.Controller
 
                     _anim.SetFloat(HorizontalHash, 0, animatorSmoothTime, Time.deltaTime);
                     _anim.SetFloat(VerticalHash, 0, animatorSmoothTime, Time.deltaTime);
-                }
+                }*/
 
                 if (!Mathf.Approximately(_rotationAngle, _targetRotationAngle))
                 {

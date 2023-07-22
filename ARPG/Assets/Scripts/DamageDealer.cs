@@ -11,7 +11,7 @@ public class DamageDealer : MonoBehaviour
 
     public UnityEvent<StatusEffect, Effectable, DamageDealer> OnApplyStatus;
 
-    public UnityEvent<Damageable, DamageDealer> OnKill;
+    public UnityEvent<Damageable, DamageDealer, AttackData> OnKill;
 
     private Character refCharacter;
 

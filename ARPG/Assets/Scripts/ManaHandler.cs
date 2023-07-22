@@ -53,6 +53,11 @@ public class ManaHandler
         return false;
     }
 
+    public void RestoreMana(int amount)
+    {
+        currentMana += amount;
+        ClampMana();
+    }
 
     private void RegenMana()
     {
