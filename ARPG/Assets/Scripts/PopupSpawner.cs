@@ -15,7 +15,7 @@ public class PopupSpawner : MonoBehaviour
     }
     public void SpawnCritDamagePopup(Vector3 pos, int amount, Element element)
     {
-        criticalDamagePopPrefab.Spawn(pos, amount.ToString() + "!", GetColorFromElement(element));
+        DamageNumber number = criticalDamagePopPrefab.Spawn(pos, $"{amount}!", GetColorFromElement(element));
     }
 
     public void SpawnHealPopup(Vector3 pos, int amount)

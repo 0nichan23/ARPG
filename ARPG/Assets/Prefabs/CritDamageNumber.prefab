@@ -95,7 +95,7 @@ GameObject:
   - component: {fileID: 2919341200546557349}
   - component: {fileID: 7897434190911478463}
   m_Layer: 0
-  m_Name: DamageNumber
+  m_Name: CritDamageNumber
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -145,7 +145,7 @@ MonoBehaviour:
     closeScale: 2
     farScale: 0.5
   cameraOverride: {fileID: 0}
-  enableNumber: 1
+  enableNumber: 0
   number: 1
   numberSettings:
     bold: 0
@@ -175,7 +175,7 @@ MonoBehaviour:
     - B
     suffixDigits: 030000000300000003000000
     maxDigits: 4
-  enableLeftText: 0
+  enableLeftText: 1
   leftText: 
   leftTextSettings:
     bold: 0
@@ -190,7 +190,7 @@ MonoBehaviour:
     horizontal: 0
     vertical: 0
     characterSpacing: 0
-    size: 0
+    size: 3
   enableRightText: 0
   rightText: 
   rightTextSettings:
@@ -286,12 +286,12 @@ MonoBehaviour:
   enableOffsetFadeOut: 0
   offsetFadeOut: {x: 0.5, y: 0}
   enableScaleFadeOut: 1
-  scaleFadeOut: {x: 0.6, y: 1.4}
-  enableCrossScaleFadeOut: 0
-  crossScaleFadeOut: {x: 1, y: 1.5}
-  enableShakeFadeOut: 1
-  shakeOffsetFadeOut: {x: 0, y: -1}
-  shakeFrequencyFadeOut: 2
+  scaleFadeOut: {x: 1.75, y: 1.75}
+  enableCrossScaleFadeOut: 1
+  crossScaleFadeOut: {x: 1.1, y: 1.1}
+  enableShakeFadeOut: 0
+  shakeOffsetFadeOut: {x: 0, y: 1.5}
+  shakeFrequencyFadeOut: 4
   enableLerp: 1
   lerpSettings:
     speed: 5
@@ -721,7 +721,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: 1
+  m_text: 
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: a50e85261c47743468fb8649eced36e7, type: 2}
   m_sharedMaterial: {fileID: -178917677106001470, guid: a50e85261c47743468fb8649eced36e7, type: 2}

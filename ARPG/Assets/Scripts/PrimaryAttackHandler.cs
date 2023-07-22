@@ -10,7 +10,7 @@ public class PrimaryAttackHandler : MonoBehaviour
     public UnityEvent<AttackData> OnPrimaryAttackPerformed;
     private int comboCounter;
 
-
+    public int ComboCounter { get => comboCounter;  }
 
     public void CacheWeaponData(List<AttackData> combo, DamageDealingCollider collider = null)
     {
@@ -40,6 +40,10 @@ public class PrimaryAttackHandler : MonoBehaviour
         anim.SetTrigger("Primary");
         anim.SetInteger("ComboIndex", comboCounter);
         comboCounter++;
+        if (comboCounter >= primaryCombo.Count)
+        {
+            comboCounter = 0;
+        }
     }
 }
 

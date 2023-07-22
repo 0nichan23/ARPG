@@ -4,10 +4,18 @@ public class Wand : BasePlayerWeapon
 {
     [SerializeField] private Element element;
     [SerializeField] private DamageDealingCollider secondaryAttackCollider;
+    [SerializeField] private Transform blastPoint;
     public override void Primary()
     {
         base.Primary();
-        //get projectile, cahce, fire, all that
+        Projectile projectile = GameManager.Instance.ObjectPoolsHandler.WizardSmallWandProjectilePool.GetPooledObject();
+        projectile.transform.position = blastPoint.position;
+        projectile.Collider.CacheOwner(GameManager.Instance.PlayerWrapper);
+        projectile.Collider.CacheAttack(primaryCombo[GameManager.Instance.PlayerWrapper.PlayerPrimaryAttackHandler.ComboCounter]);
+        projectile.gameObject.SetActive(true);
+        projectile.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y - 90, 0);
+        Vector3 direction = GameManager.Instance.PlayerWrapper.Controller.GetPoint() - transform.position;
+        projectile.Fire(direction.normalized);
     }
 
 

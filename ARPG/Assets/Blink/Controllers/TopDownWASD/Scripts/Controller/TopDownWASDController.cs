@@ -1,7 +1,3 @@
-using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEditor;
 using UnityEngine;
 
 namespace BLINK.Controller
@@ -39,13 +35,13 @@ namespace BLINK.Controller
         private Vector2 _currentDistanceVectorVelocity;
         private float _dragAngle;
         private bool _isDragging;
-        
+
         // NAVIGATION
         public bool movementEnabled = true;
         public float jumpHeight = 4;
         public float gravity = 10;
         public float moveSpeed = 5;
-        
+
         // INPUT
         public KeyCode moveUpKey = KeyCode.W,
             moveDownKey = KeyCode.S,
@@ -64,7 +60,7 @@ namespace BLINK.Controller
         public float headWeightIK = 1.0f;
         public float dampSmoothTimeIK = 0.4f;
         public float dampSmoothTimeRotation = 0.25f;
-        
+
         // ANIMATOR 
         static readonly int HorizontalHash = Animator.StringToHash("Horizontal");
         static readonly int VerticalHash = Animator.StringToHash("Vertical");
@@ -91,7 +87,7 @@ namespace BLINK.Controller
         {
             _actualMoveSpeed = moveSpeed;
             InitReferences();
-            
+
             if (cameraEnabled)
             {
                 InitCameraValues();
@@ -102,7 +98,7 @@ namespace BLINK.Controller
         void Update()
         {
             if (movementEnabled) HandleMovement();
-            if (cameraEnabled)  CameraLogic();
+            if (cameraEnabled) CameraLogic();
         }
 
         private void LateUpdate()
@@ -191,20 +187,20 @@ namespace BLINK.Controller
         {
             HandleCameraZoom();
         }
-        
+
         private void CameraLogic()
         {
             if (!cameraEnabled) return;
             CameraInputs();
             LerpCameraHeight();
         }
-        
+
         private void LerpCameraHeight()
         {
             _currentCameraHeight = Mathf.Lerp(_currentCameraHeight, _cameraHeightTarget, Time.deltaTime * cameraZoomSpeed);
             _currentCameraVertical = Mathf.Lerp(_currentCameraVertical, _cameraVerticalTarget, Time.deltaTime * cameraZoomSpeed);
         }
-        
+
         private void HandleCameraZoom()
         {
             if (Input.mouseScrollDelta.y == 0) return;
@@ -216,7 +212,7 @@ namespace BLINK.Controller
             if (_cameraVerticalTarget > maxCameraVertical) _cameraVerticalTarget = maxCameraVertical;
             else if (_cameraVerticalTarget < minCameraVertical) _cameraVerticalTarget = minCameraVertical;
         }
-        
+
         private void InitCamera()
         {
             if (!initCameraOnSpawn && playerCamera != null) return;
@@ -236,7 +232,7 @@ namespace BLINK.Controller
             _forward = playerCamera.transform.forward;
             InstantCameraUpdate();
         }
-        
+
         private void InitCameraValues()
         {
             _currentCameraHeight = cameraPositionOffset.y;
@@ -244,7 +240,7 @@ namespace BLINK.Controller
             _currentCameraVertical = cameraPositionOffset.z;
             _cameraVerticalTarget = _currentCameraVertical;
         }
-        
+
         void InstantCameraUpdate()
         {
             Vector3 targetPos = transform.position - (playerCamera.transform.forward * _currentCameraHeight);
@@ -290,8 +286,8 @@ namespace BLINK.Controller
                     _displacement.x = input.x;
                     _displacement.z = input.y;
 
-                   /* _anim.SetLayerWeight(1, 1);
-                    _anim.SetLayerWeight(2, 0);*/
+                    /* _anim.SetLayerWeight(1, 1);
+                     _anim.SetLayerWeight(2, 0);*/
                 }
                 else
                 {
@@ -301,21 +297,21 @@ namespace BLINK.Controller
                         _displacement.z = 0.0f;
                     }
 
-                   /* _anim.SetLayerWeight(1, 0);
-                    _anim.SetLayerWeight(2, 1);*/
+                    /* _anim.SetLayerWeight(1, 0);
+                     _anim.SetLayerWeight(2, 1);*/
                 }
 
                 _lookAngle =
                     Mathf.Atan2(transform.position.z - point.z, point.x - transform.position.x) * Mathf.Rad2Deg + 90;
 
-               
+
                 float deltaAngle = Mathf.DeltaAngle(_lookAngle, _forwardF);
-                    float differenceAngle = Mathf.Round(deltaAngle / 45) * 45;
+                float differenceAngle = Mathf.Round(deltaAngle / 45) * 45;
 
-                    _targetRotationAngle = _forwardF - differenceAngle;
+                _targetRotationAngle = _forwardF - differenceAngle;
 
-                    float horizontal = Mathf.Round(Mathf.Sin(differenceAngle * Mathf.Deg2Rad));
-                    float vertical = Mathf.Round(Mathf.Cos(differenceAngle * Mathf.Deg2Rad));
+                float horizontal = Mathf.Round(Mathf.Sin(differenceAngle * Mathf.Deg2Rad));
+                float vertical = Mathf.Round(Mathf.Cos(differenceAngle * Mathf.Deg2Rad));
 
                 if (input == Vector2.zero)
                 {
@@ -328,35 +324,10 @@ namespace BLINK.Controller
                     _anim.SetFloat(VerticalHash, vertical, animatorSmoothTime, Time.deltaTime);
                 }
 
-                // }
-                /*else
-                {
-                    float deltaAngle = Mathf.DeltaAngle(_forwardF, _lookAngle);
+                _rotationAngle = Mathf.SmoothDampAngle(_rotationAngle, _targetRotationAngle, ref _angularVelocity, dampSmoothTimeRotation);
 
-                    if (deltaAngle < -90)
-                    {
-                        _targetRotationAngle = _forwardF - 90f;
-                        _forwardF = _forwardF - 90f;
-                    }
+                transform.rotation = Quaternion.Euler(0, _rotationAngle, 0);
 
-                    if (deltaAngle > 90)
-                    {
-                        _targetRotationAngle = _forwardF + 90f;
-                        _forwardF = _forwardF + 90f;
-                    }
-
-                    _anim.SetFloat(HorizontalHash, 0, animatorSmoothTime, Time.deltaTime);
-                    _anim.SetFloat(VerticalHash, 0, animatorSmoothTime, Time.deltaTime);
-                }*/
-
-                if (!Mathf.Approximately(_rotationAngle, _targetRotationAngle))
-                {
-                    _rotationAngle = Mathf.SmoothDampAngle(_rotationAngle, _targetRotationAngle,
-                        ref _angularVelocity,
-                        dampSmoothTimeRotation);
-
-                    transform.rotation = Quaternion.Euler(0, _rotationAngle, 0);
-                }
             }
             else
             {
@@ -387,7 +358,8 @@ namespace BLINK.Controller
 
         private float GetGroundDistance()
         {
-            if (Physics.Raycast (transform.position, -Vector3.up, out var hit)) {
+            if (Physics.Raycast(transform.position, -Vector3.up, out var hit))
+            {
                 return hit.distance;
             }
             return 0;
@@ -434,7 +406,7 @@ namespace BLINK.Controller
             return new Vector2(Mathf.Cos(angle), -Mathf.Sin(angle));
         }
 
-        private Vector3 GetPoint()
+        public Vector3 GetPoint()
         {
             var playerPlane = new Plane(Vector3.up, transform.position);
             var ray = playerCamera.ScreenPointToRay(Input.mousePosition);

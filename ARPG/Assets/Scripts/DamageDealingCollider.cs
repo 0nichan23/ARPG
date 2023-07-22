@@ -1,20 +1,31 @@
 using System.Collections;
 using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(Collider))]
 public class DamageDealingCollider : MonoBehaviour
 {
     [SerializeField] private Character owner;
+    [SerializeField] private bool blink = true;
     [SerializeField] private int activeFrames;
+    public UnityEvent OnHit;
     private AttackData currentAttack;
     public bool blocked;
     private void OnEnable()
     {
-        StartCoroutine(TurnOff());
+        if (blink)
+        {
+            StartCoroutine(TurnOff());
+        }
     }
     private void OnDisable()
     {
         blocked = false;
+    }
+
+    public void CacheOwner(Character givenCharacter)
+    {
+        owner = givenCharacter;
     }
 
     private IEnumerator TurnOff()
@@ -42,6 +53,7 @@ public class DamageDealingCollider : MonoBehaviour
             return;
         }
         target.Damageable.GetHit(currentAttack, owner.DamageDealer);
+        OnHit?.Invoke();
     }
 
 }

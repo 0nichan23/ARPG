@@ -198,6 +198,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4289899900619000747, guid: 294b72a480eb3d34db9d287118b3b9df, type: 3}
+      propertyPath: criticalDamagePopPrefab
+      value: 
+      objectReference: {fileID: 2919341200546557349, guid: 1b05399399c05dc478ee865dd32c9392, type: 3}
     - target: {fileID: 4289899901517128299, guid: 294b72a480eb3d34db9d287118b3b9df, type: 3}
       propertyPath: m_Name
       value: GameManager

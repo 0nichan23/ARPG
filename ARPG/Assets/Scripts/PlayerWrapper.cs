@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using BLINK.Controller;
 
 public class PlayerWrapper : Character
 {
@@ -10,6 +11,7 @@ public class PlayerWrapper : Character
     [SerializeField] private UtilityHandler playerUtilityHandler;
     [SerializeField] private BasePlayerClass currentClass;
     [SerializeField] private Animator playerAnim;
+    [SerializeField] private TopDownWASDController controller;
     private PlayerHud playerHud;
     public bool CanAttack = true;
     public PrimaryAttackHandler PlayerPrimaryAttackHandler { get => playerPrimaryAttackHandler;}
@@ -19,6 +21,7 @@ public class PlayerWrapper : Character
     public BasePlayerClass CurrentClass { get => currentClass;  }
     public Animator PlayerAnim { get => playerAnim; }
     public PlayerHud PlayerHud { get => playerHud;}
+    public TopDownWASDController Controller { get => controller; }
 
     protected override void Awake()
     {
@@ -37,8 +40,8 @@ public class PlayerWrapper : Character
     [ContextMenu("test stats")]
     private void TestStats()
     {
-        Stats.AddManaRegen(150);
-        Stats.AddCDR(150);
+        Stats.AddCritHit(150);
+        Stats.AddCritDamage(150);
     }
 
 }
