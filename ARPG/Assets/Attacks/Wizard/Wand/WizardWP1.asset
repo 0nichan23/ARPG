@@ -14,7 +14,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseDamage: 8
   coolDown: 0
-  element: 1
+  element: 6
   scalingAttribute: 2
-  scalingFactor: 0.5
+  scalingFactor: 0.4
   manaCost: 0

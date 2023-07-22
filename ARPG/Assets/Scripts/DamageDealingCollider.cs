@@ -11,6 +11,9 @@ public class DamageDealingCollider : MonoBehaviour
     public UnityEvent OnHit;
     private AttackData currentAttack;
     public bool blocked;
+
+    public AttackData CurrentAttack { get => currentAttack; }
+
     private void OnEnable()
     {
         if (blink)
@@ -48,7 +51,7 @@ public class DamageDealingCollider : MonoBehaviour
     private void OnTriggerEnter(Collider other)
     {
         Character target = other.GetComponent<Character>();
-        if (blocked|| ReferenceEquals(target, null) || ReferenceEquals(currentAttack, null))
+        if (blocked || ReferenceEquals(target, null) || ReferenceEquals(currentAttack, null))
         {
             return;
         }

@@ -13,7 +13,7 @@ public class Wand : BasePlayerWeapon
         projectile.Collider.CacheOwner(GameManager.Instance.PlayerWrapper);
         projectile.Collider.CacheAttack(primaryCombo[GameManager.Instance.PlayerWrapper.PlayerPrimaryAttackHandler.ComboCounter]);
         projectile.gameObject.SetActive(true);
-        projectile.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y - 90, 0);
+        projectile.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y -90, 0);
         Vector3 direction = GameManager.Instance.PlayerWrapper.Controller.GetPoint() - transform.position;
         projectile.Fire(direction.normalized);
     }
