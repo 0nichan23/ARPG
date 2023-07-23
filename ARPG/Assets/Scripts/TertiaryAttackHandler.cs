@@ -8,7 +8,8 @@ public class TertiaryAttackHandler : MonoBehaviour
     [SerializeField] private Animator anim;
     private AttackData refAttack;
     private DamageDealingCollider secondaryCollider;
-    public UnityEvent<AttackData> OnTertiaryAttackPerformed;
+    public UnityEvent OnTertiaryAttackPerformed;
+    public UnityEvent OnTeritiaryCanceled;
     private float lastUsed;
 
 
@@ -35,6 +36,10 @@ public class TertiaryAttackHandler : MonoBehaviour
         {
             Tertiary();
         }
+        else if (Input.GetKeyUp(KeyCode.Q))
+        {
+            OnTeritiaryCanceled?.Invoke();
+        }
     }
 
     private void Tertiary()
@@ -48,7 +53,7 @@ public class TertiaryAttackHandler : MonoBehaviour
         {
             secondaryCollider.CacheAttack(refAttack);
         }
-        OnTertiaryAttackPerformed?.Invoke(refAttack);
+        OnTertiaryAttackPerformed?.Invoke();
         lastUsed = Time.time;
         anim.SetTrigger("Tertiary");
     }

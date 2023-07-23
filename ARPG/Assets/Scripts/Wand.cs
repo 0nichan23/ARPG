@@ -1,3 +1,4 @@
+using System.Collections;
 using UnityEngine;
 
 public class Wand : BasePlayerWeapon
@@ -5,7 +6,12 @@ public class Wand : BasePlayerWeapon
     [SerializeField] private Element element;
     [SerializeField] private DamageDealingCollider secondaryAttackCollider;
     [SerializeField] private ElementalObjectHandler secondaryEffect;
+    [SerializeField] private float tertiaryRange;
     [SerializeField] private Transform blastPoint;
+    [SerializeField] private LayerMask tertiaryLayer;
+    [SerializeField] private float tertiaryIntervals;
+    private float lastTertiaryTick;
+    private bool tertiaryDown;
     public override void Primary()
     {
         base.Primary();
@@ -27,7 +33,6 @@ public class Wand : BasePlayerWeapon
         secondaryEffect.ElementalObjectOn(secondaryAttack.Element);
     }
 
-
     public override void CacheWeaponOnHandlers()
     {
         foreach (var item in primaryCombo)
@@ -39,7 +44,33 @@ public class Wand : BasePlayerWeapon
         GameManager.Instance.PlayerWrapper.PlayerPrimaryAttackHandler.CacheWeaponData(PrimaryCombo);
         GameManager.Instance.PlayerWrapper.PlayerSecondaryAttackHandler.CacheWeaponData(secondaryAttack, secondaryAttackCollider);
         GameManager.Instance.PlayerWrapper.PlayerTertiaryAttackHandler.CacheWeaponData(tertiaryAttack);
+        GameManager.Instance.PlayerWrapper.PlayerTertiaryAttackHandler.OnTeritiaryCanceled.AddListener(() => tertiaryDown = false);
         GameManager.Instance.PlayerWrapper.PlayerUtilityHandler.CacheWeaponData();
     }
 
+    public override void Tertiary()
+    {
+        base.Tertiary();
+        tertiaryDown = true;
+        StartCoroutine(StartTertiaryBeam(TertiaryAttack));
+    }
+
+    private IEnumerator StartTertiaryBeam(AttackData attack)
+    {
+        while (tertiaryDown)
+        {
+            Vector3 direction = GameManager.Instance.PlayerWrapper.Controller.GetPoint() - transform.position;
+            RaycastHit hit;
+            Physics.Raycast(blastPoint.position, direction.normalized, out hit, tertiaryRange, tertiaryLayer, QueryTriggerInteraction.Ignore);
+            if (!ReferenceEquals(hit.collider, null))
+            {
+                Character target = hit.collider.gameObject.GetComponent<Character>();
+                if (!ReferenceEquals(target, null))
+                {
+                    target.Damageable.GetHit(attack, GameManager.Instance.PlayerWrapper.DamageDealer);
+                }
+            }
+            yield return new WaitForSeconds(tertiaryIntervals);
+        }
+    }
 }
