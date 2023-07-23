@@ -6,6 +6,7 @@ public class Wand : BasePlayerWeapon
     [SerializeField] private Element element;
     [SerializeField] private DamageDealingCollider secondaryAttackCollider;
     [SerializeField] private ElementalObjectHandler secondaryEffect;
+    [SerializeField] private ElementalObjectHandler tertiaryEffect;
     [SerializeField] private float tertiaryRange;
     [SerializeField] private Transform blastPoint;
     [SerializeField] private LayerMask tertiaryLayer;
@@ -44,6 +45,7 @@ public class Wand : BasePlayerWeapon
         GameManager.Instance.PlayerWrapper.PlayerPrimaryAttackHandler.CacheWeaponData(PrimaryCombo);
         GameManager.Instance.PlayerWrapper.PlayerSecondaryAttackHandler.CacheWeaponData(secondaryAttack, secondaryAttackCollider);
         GameManager.Instance.PlayerWrapper.PlayerTertiaryAttackHandler.CacheWeaponData(tertiaryAttack);
+        GameManager.Instance.PlayerWrapper.PlayerTertiaryAttackHandler.OnTertiaryAttackPerformed.AddListener(() => tertiaryDown = true);
         GameManager.Instance.PlayerWrapper.PlayerTertiaryAttackHandler.OnTeritiaryCanceled.AddListener(() => tertiaryDown = false);
         GameManager.Instance.PlayerWrapper.PlayerUtilityHandler.CacheWeaponData();
     }
@@ -51,26 +53,42 @@ public class Wand : BasePlayerWeapon
     public override void Tertiary()
     {
         base.Tertiary();
-        tertiaryDown = true;
-        StartCoroutine(StartTertiaryBeam(TertiaryAttack));
+        StartCoroutine(TertiaryBeam(TertiaryAttack));
     }
 
-    private IEnumerator StartTertiaryBeam(AttackData attack)
+    private IEnumerator TertiaryBeam(AttackData attack)
     {
+        ElementalObject ej = tertiaryEffect.ElementalObjectOn(attack.Element);
         while (tertiaryDown)
         {
-            Vector3 direction = GameManager.Instance.PlayerWrapper.Controller.GetPoint() - transform.position;
+            GameManager.Instance.PlayerWrapper.Controller.movementEnabled = false;
+            ej.renderer.SetPosition(0, blastPoint.position);
+            Vector3 point = GameManager.Instance.PlayerWrapper.Controller.GetPoint();
+            Vector3 direction = new Vector3(point.x - transform.position.x, 0, point.z - transform.position.z).normalized;
             RaycastHit hit;
-            Physics.Raycast(blastPoint.position, direction.normalized, out hit, tertiaryRange, tertiaryLayer, QueryTriggerInteraction.Ignore);
+            Physics.Raycast(blastPoint.position, direction, out hit, tertiaryRange, tertiaryLayer, QueryTriggerInteraction.Ignore);
             if (!ReferenceEquals(hit.collider, null))
             {
+                ej.renderer.SetPosition(1, hit.point);
                 Character target = hit.collider.gameObject.GetComponent<Character>();
                 if (!ReferenceEquals(target, null))
                 {
                     target.Damageable.GetHit(attack, GameManager.Instance.PlayerWrapper.DamageDealer);
                 }
             }
+            else
+            {
+                Vector3 maxVector = blastPoint.position + (direction * tertiaryRange);
+                ej.renderer.SetPosition(1, maxVector);
+            }
+            if (!GameManager.Instance.PlayerWrapper.ManaHandler.CheckManaAvailable(attack.ManaCost))
+            {
+                break;
+            }
             yield return new WaitForSeconds(tertiaryIntervals);
         }
+        tertiaryEffect.ElementalObjectsOff();
+        GameManager.Instance.PlayerWrapper.Controller.movementEnabled = true;
+        GameManager.Instance.PlayerWrapper.PlayerAnim.SetTrigger("BeamDone");
     }
 }

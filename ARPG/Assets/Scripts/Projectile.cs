@@ -43,5 +43,6 @@ public class ElementalObject
 {
     public Element element;
     public GameObject obj;
+    public LineRenderer renderer;
 }
 

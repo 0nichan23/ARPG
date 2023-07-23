@@ -13,8 +13,15 @@ public class ElementalObjectHandler : MonoBehaviour
             item.gameObject.SetActive(false);
         }
     }
+    public void ElementalObjectsOff()
+    {
+        foreach (var item in elementalPrefabs)
+        {
+            item.obj.SetActive(false);
+        }
+    }
 
-    public void ElementalObjectOn(Element element)
+    public ElementalObject ElementalObjectOn(Element element)
     {
         foreach (var item in elementalPrefabs)
         {
@@ -22,8 +29,10 @@ public class ElementalObjectHandler : MonoBehaviour
             if (item.element == element)
             {
                 item.obj.SetActive(true);
+                return item;
             }
         }
+        return null;
     }
 
     public List<ElementalObject> ElementalPrefabs { get => elementalPrefabs; }
