@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd7373faec2015a489e592b2e924e2d4, type: 3}
   m_Name: WizardWS
   m_EditorClassIdentifier: 
-  baseDamage: 40
+  baseDamage: 60
   coolDown: 8
   element: 1
   scalingAttribute: 2

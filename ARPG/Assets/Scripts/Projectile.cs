@@ -8,7 +8,7 @@ public class Projectile : MonoBehaviour
     [SerializeField] private Rigidbody rb;
     [SerializeField] private float speed;
     [SerializeField] private float lifeTime;
-    [SerializeField] private List<ProjectileElement> elementalPrefabs = new List<ProjectileElement>();
+    [SerializeField] private ElementalObjectHandler elementalObjectHandler;
     public DamageDealingCollider Collider { get => collider; }
 
     private void Awake()
@@ -23,14 +23,7 @@ public class Projectile : MonoBehaviour
     public void Fire(Vector3 direction)
     {
         rb.velocity = direction * speed;
-        foreach (var item in elementalPrefabs)
-        {
-            item.obj.SetActive(false);
-            if (item.element == collider.CurrentAttack.Element)
-            {
-                item.obj.SetActive(true);
-            }
-        }
+        elementalObjectHandler.ElementalObjectOn(collider.CurrentAttack.Element);
     }
 
     public void Blast()
@@ -46,7 +39,7 @@ public class Projectile : MonoBehaviour
     }
 }
 [System.Serializable]
-public class ProjectileElement
+public class ElementalObject
 {
     public Element element;
     public GameObject obj;

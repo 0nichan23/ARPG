@@ -4,6 +4,7 @@ public class Wand : BasePlayerWeapon
 {
     [SerializeField] private Element element;
     [SerializeField] private DamageDealingCollider secondaryAttackCollider;
+    [SerializeField] private ElementalObjectHandler secondaryEffect;
     [SerializeField] private Transform blastPoint;
     public override void Primary()
     {
@@ -13,11 +14,18 @@ public class Wand : BasePlayerWeapon
         projectile.Collider.CacheOwner(GameManager.Instance.PlayerWrapper);
         projectile.Collider.CacheAttack(primaryCombo[GameManager.Instance.PlayerWrapper.PlayerPrimaryAttackHandler.ComboCounter]);
         projectile.gameObject.SetActive(true);
-        projectile.transform.eulerAngles = new Vector3(0, transform.eulerAngles.y -90, 0);
-        Vector3 direction = GameManager.Instance.PlayerWrapper.Controller.GetPoint() - transform.position;
+        Vector3 point = GameManager.Instance.PlayerWrapper.Controller.GetPoint();
+        projectile.transform.eulerAngles = transform.eulerAngles;
+        Vector3 direction = point - transform.position;
         projectile.Fire(direction.normalized);
     }
 
+    public override void Secondary()
+    {
+        base.Secondary();
+        secondaryAttackCollider.gameObject.SetActive(true);
+        secondaryEffect.ElementalObjectOn(secondaryAttack.Element);
+    }
 
 
     public override void CacheWeaponOnHandlers()
