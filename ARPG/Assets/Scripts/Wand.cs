@@ -58,12 +58,13 @@ public class Wand : BasePlayerWeapon
 
     private IEnumerator TertiaryBeam(AttackData attack)
     {
+        yield return new WaitForSeconds(0.1f);
+        Vector3 point = GameManager.Instance.PlayerWrapper.Controller.GetPoint();
         ElementalObject ej = tertiaryEffect.ElementalObjectOn(attack.Element);
         while (tertiaryDown)
         {
             GameManager.Instance.PlayerWrapper.Controller.movementEnabled = false;
             ej.renderer.SetPosition(0, blastPoint.position);
-            Vector3 point = GameManager.Instance.PlayerWrapper.Controller.GetPoint();
             Vector3 direction = new Vector3(point.x - transform.position.x, 0, point.z - transform.position.z).normalized;
             RaycastHit hit;
             Physics.Raycast(blastPoint.position, direction, out hit, tertiaryRange, tertiaryLayer, QueryTriggerInteraction.Ignore);

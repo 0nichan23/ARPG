@@ -123,16 +123,22 @@ MonoBehaviour:
   elementalPrefabs:
   - element: 1
     obj: {fileID: 1831602621905219503}
+    renderer: {fileID: 0}
   - element: 2
     obj: {fileID: 7737521958121007938}
+    renderer: {fileID: 0}
   - element: 3
     obj: {fileID: 6186120633080149222}
+    renderer: {fileID: 0}
   - element: 4
     obj: {fileID: 3848043269425621647}
+    renderer: {fileID: 0}
   - element: 5
     obj: {fileID: 7719472102705946257}
+    renderer: {fileID: 0}
   - element: 6
     obj: {fileID: 7608473419934700450}
+    renderer: {fileID: 0}
 --- !u!1001 &2446498402782125992
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -202,6 +208,9 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 408520364448828798, guid: 7a034513a2684b34883cbd27dc6add06, type: 3}
+    - {fileID: 8486986840002853685, guid: 7a034513a2684b34883cbd27dc6add06, type: 3}
+    - {fileID: 8486986840002853684, guid: 7a034513a2684b34883cbd27dc6add06, type: 3}
+    - {fileID: 8486986840002853687, guid: 7a034513a2684b34883cbd27dc6add06, type: 3}
   m_SourcePrefab: {fileID: 100100000, guid: 7a034513a2684b34883cbd27dc6add06, type: 3}
 --- !u!4 &682050275038723278 stripped
 Transform:
