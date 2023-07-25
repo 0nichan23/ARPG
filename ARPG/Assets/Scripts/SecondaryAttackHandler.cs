@@ -29,7 +29,7 @@ public class SecondaryAttackHandler : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance.PlayerWrapper.CanAttack && CheckCoolDown() && Input.GetMouseButtonDown(1))
+        if (GameManager.Instance.PlayerWrapper.CanAttack && CheckCoolDown() && Input.GetMouseButton(1))
         {
             Secondary();
         }

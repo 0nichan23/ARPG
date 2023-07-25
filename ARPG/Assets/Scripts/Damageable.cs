@@ -36,7 +36,7 @@ public class Damageable : MonoBehaviour
 
     private void ApplyResistance(AttackData attack, Damageable target, DamageDealer dealer, DamageHandler dmg)
     {
-        if (attack.Element == Element.Physical)
+        if (dmg.Element == Element.Physical)
         {
             dmg.AddMod(refCharacter.Stats.Armor());
         }
@@ -65,7 +65,8 @@ public class Damageable : MonoBehaviour
     public void GetHit(AttackData attack, DamageDealer dealer)
     {
         DamageHandler dmg = new DamageHandler() { BaseAmount = attack.BaseDamage };
-        OnGetHit?.Invoke(attack, this, dealer, dmg);
+        dmg.Imbue(attack.Element);
+        OnGetHit?.Invoke(attack, this, dealer, dmg); // imbue from outside if necessary
         dealer.OnHit?.Invoke(this, attack, dealer, dmg);
         if (dealer.CheckForCritHit())
         {
@@ -91,11 +92,11 @@ public class Damageable : MonoBehaviour
         {
             if (critHit)
             {
-                GameManager.Instance.PopupSpawner.SpawnCritDamagePopup(transform.position, Mathf.RoundToInt(dmg.CalcFinalDamageMult()), attack.Element);
+                GameManager.Instance.PopupSpawner.SpawnCritDamagePopup(transform.position, Mathf.RoundToInt(dmg.CalcFinalDamageMult()), dmg.Element);
             }
             else
             {
-                GameManager.Instance.PopupSpawner.SpawnDamagePopup(transform.position, Mathf.RoundToInt(dmg.CalcFinalDamageMult()), attack.Element);
+                GameManager.Instance.PopupSpawner.SpawnDamagePopup(transform.position, Mathf.RoundToInt(dmg.CalcFinalDamageMult()), dmg.Element);
             }
         }
         currentHp -= Mathf.RoundToInt(dmg.CalcFinalDamageMult());

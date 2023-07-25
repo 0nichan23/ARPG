@@ -1,6 +1,5 @@
 using System.Collections;
 using UnityEngine;
-using System.Collections.Generic;
 
 public class Projectile : MonoBehaviour
 {
@@ -20,10 +19,10 @@ public class Projectile : MonoBehaviour
         StartCoroutine(LifeTimeCount());
     }
 
-    public void Fire(Vector3 direction)
+    public void Fire(Vector3 direction, Element element = Element.Physical)
     {
         rb.velocity = direction * speed;
-        elementalObjectHandler.ElementalObjectOn(collider.CurrentAttack.Element);
+        elementalObjectHandler.ElementalObjectOn(element);
     }
 
     public void Blast()

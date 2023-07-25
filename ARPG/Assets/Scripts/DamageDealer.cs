@@ -21,8 +21,7 @@ public class DamageDealer : MonoBehaviour
     {
         refCharacter = givenCharacter;
         OnHit.AddListener(ScaleDamage);
-        OnHit.AddListener(AddArmorPen);
-        OnHit.AddListener(AddMagicPen);
+        OnHit.AddListener(AddPen);
         OnDealCritDamage.AddListener(AddCritDamage);
     }
 
@@ -37,16 +36,13 @@ public class DamageDealer : MonoBehaviour
         dmg.AddMod(refCharacter.Stats.CritDamage());
     }
 
-    private void AddArmorPen(Damageable target, AttackData attack, DamageDealer dealer, DamageHandler dmg)
-    {
-        if (attack.Element == Element.Physical)
+    private void AddPen(Damageable target, AttackData attack, DamageDealer dealer, DamageHandler dmg)
+    {//penetration is detemined by the scaling attribute of the attack, if the attack scales with either str or dex apply armor pen else apply magic pen
+        if (attack.ScalingAttribute == Attribute.Dexterity || attack.ScalingAttribute == Attribute.Strengh)
         {
             dmg.AddMod(refCharacter.Stats.ArmorPen(target.RefCharacter));
         }
-    }
-    private void AddMagicPen(Damageable target, AttackData attack, DamageDealer dealer, DamageHandler dmg)
-    {
-        if (attack.Element != Element.Physical)
+        else
         {
             dmg.AddMod(refCharacter.Stats.MagicPen(target.RefCharacter));
         }

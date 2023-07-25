@@ -32,7 +32,7 @@ public class TertiaryAttackHandler : MonoBehaviour
 
     void Update()
     {
-        if (GameManager.Instance.PlayerWrapper.CanAttack && CheckCoolDown() && Input.GetKeyDown(KeyCode.Q))
+        if (GameManager.Instance.PlayerWrapper.CanAttack && CheckCoolDown() && Input.GetKey(KeyCode.Q))
         {
             Tertiary();
         }

@@ -5,10 +5,17 @@ using UnityEngine;
 public class DamageHandler
 {
     [SerializeField] private float baseAmount;
+    private Element element;
     private List<float> mods = new List<float>();
     private List<int> flatMods = new List<int>();
     public List<float> Mods { get => mods; }
     public float BaseAmount { get => baseAmount; set => baseAmount = value; }
+    public Element Element { get => element;}
+
+    public void Imbue(Element givenElement)
+    {
+        element = givenElement;
+    }
 
     public void AddMod(float mod)
     {

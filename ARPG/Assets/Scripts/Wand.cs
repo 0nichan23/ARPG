@@ -3,7 +3,6 @@ using UnityEngine;
 
 public class Wand : BasePlayerWeapon
 {
-    [SerializeField] private Element element;
     [SerializeField] private DamageDealingCollider secondaryAttackCollider;
     [SerializeField] private ElementalObjectHandler secondaryEffect;
     [SerializeField] private ElementalObjectHandler tertiaryEffect;
@@ -24,24 +23,18 @@ public class Wand : BasePlayerWeapon
         Vector3 point = GameManager.Instance.PlayerWrapper.Controller.GetPoint();
         projectile.transform.eulerAngles = transform.eulerAngles;
         Vector3 direction = point - transform.position;
-        projectile.Fire(direction.normalized);
+        projectile.Fire(direction.normalized, element);
     }
 
     public override void Secondary()
     {
         base.Secondary();
         secondaryAttackCollider.gameObject.SetActive(true);
-        secondaryEffect.ElementalObjectOn(secondaryAttack.Element);
+        secondaryEffect.ElementalObjectOn(Element);
     }
 
     public override void CacheWeaponOnHandlers()
     {
-        foreach (var item in primaryCombo)
-        {
-            item.Imbue(element);
-        }
-        secondaryAttack.Imbue(element);
-        tertiaryAttack.Imbue(element);
         GameManager.Instance.PlayerWrapper.PlayerPrimaryAttackHandler.CacheWeaponData(PrimaryCombo);
         GameManager.Instance.PlayerWrapper.PlayerSecondaryAttackHandler.CacheWeaponData(secondaryAttack, secondaryAttackCollider);
         GameManager.Instance.PlayerWrapper.PlayerTertiaryAttackHandler.CacheWeaponData(tertiaryAttack);
@@ -60,7 +53,7 @@ public class Wand : BasePlayerWeapon
     {
         yield return new WaitForSeconds(0.1f);
         Vector3 point = GameManager.Instance.PlayerWrapper.Controller.GetPoint();
-        ElementalObject ej = tertiaryEffect.ElementalObjectOn(attack.Element);
+        ElementalObject ej = tertiaryEffect.ElementalObjectOn(element);
         while (tertiaryDown)
         {
             GameManager.Instance.PlayerWrapper.Controller.movementEnabled = false;
