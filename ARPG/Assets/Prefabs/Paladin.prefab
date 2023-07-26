@@ -59,7 +59,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   owner: {fileID: 6815882170506286206}
+  blink: 1
   activeFrames: 10
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTurnedOff:
+    m_PersistentCalls:
+      m_Calls: []
   blocked: 0
 --- !u!1 &962821498
 GameObject:
@@ -120,7 +127,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   owner: {fileID: 6815882170506286206}
+  blink: 1
   activeFrames: 10
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTurnedOff:
+    m_PersistentCalls:
+      m_Calls: []
   blocked: 0
 --- !u!1 &1357637616
 GameObject:
@@ -168,7 +182,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   owner: {fileID: 6815882170506286206}
+  blink: 1
   activeFrames: 10
+  OnHit:
+    m_PersistentCalls:
+      m_Calls: []
+  OnTurnedOff:
+    m_PersistentCalls:
+      m_Calls: []
   blocked: 0
 --- !u!65 &1296356740
 BoxCollider:
@@ -310,11 +331,13 @@ GameObject:
   - component: {fileID: 200010126}
   - component: {fileID: 1047378392}
   - component: {fileID: 1047378393}
-  - component: {fileID: 1047378403}
-  - component: {fileID: 1047378410}
   - component: {fileID: 4777659755737783039}
-  - component: {fileID: 1583933249}
   - component: {fileID: 1583933250}
+  - component: {fileID: 1321422462}
+  - component: {fileID: 1321422463}
+  - component: {fileID: 884289349429918943}
+  - component: {fileID: 4664815340018759102}
+  - component: {fileID: 394987627602205651}
   m_Layer: 6
   m_Name: Paladin
   m_TagString: Player
@@ -464,12 +487,16 @@ MonoBehaviour:
     maxMana: 0
     currentMana: 0
   playerPrimaryAttackHandler: {fileID: 6815882170506286207}
-  playerSecondaryAttackHandler: {fileID: 1047378403}
-  playerTertiaryAttackHandler: {fileID: 1583933249}
-  playerUtilityHandler: {fileID: 1047378410}
+  secondaryHandler: {fileID: 884289349429918943}
+  tertiaryHandler: {fileID: 4664815340018759102}
+  utilityHandler: {fileID: 394987627602205651}
+  playerDashHandler: {fileID: 1321422462}
   currentClass: {fileID: 1047378393}
   playerAnim: {fileID: 6815882170506286201}
+  controller: {fileID: 6815882170506286212}
+  playerDash: {fileID: 1321422463}
   CanAttack: 1
+  CanDash: 1
 --- !u!114 &200010123
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -585,6 +612,8 @@ MonoBehaviour:
   secondaryAttack: {fileID: 11400000, guid: 04fa066fdad035b4ea23fe01cad0ccac, type: 2}
   tertiaryAttack: {fileID: 11400000, guid: 5a7edb7957150ad43b5f43c712b1db38, type: 2}
   animController: {fileID: 9100000, guid: 8639fb2008972934d88f007413e5fa82, type: 2}
+  element: 0
+  imbueAttacks: 0
   PrimaryCollider: {fileID: 1357637617}
   SecondarCollider: {fileID: 962821499}
   utilityCollider: {fileID: 1361216882}
@@ -620,42 +649,6 @@ MonoBehaviour:
   UtilityUsed:
     m_PersistentCalls:
       m_Calls: []
---- !u!114 &1047378403
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6815882170506286213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: ec617c4c9dbb77a4b8d71859b62387a7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 6815882170506286201}
-  OnSecondaryAttackPerformed:
-    m_PersistentCalls:
-      m_Calls: []
---- !u!114 &1047378410
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6815882170506286213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 7e000fe044133c14daa4dfd9af59fc91, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  coolDown: 0
-  anim: {fileID: 6815882170506286201}
-  OnUtilityPerformed:
-    m_PersistentCalls:
-      m_Calls: []
-  OnUtilityUp:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &4777659755737783039
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -670,22 +663,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   baseMaxHealth: 150
   baseMaxMana: 85
---- !u!114 &1583933249
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6815882170506286213}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d19f49b5d410bb479094e9cf0d859cb, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  anim: {fileID: 6815882170506286201}
-  OnTertiaryAttackPerformed:
-    m_PersistentCalls:
-      m_Calls: []
 --- !u!114 &1583933250
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -700,6 +677,108 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   blastCollider: {fileID: 246710796}
   blastAttack: {fileID: 11400000, guid: 5adc31d9b710d0d4fb9dc3058b194242, type: 2}
+--- !u!114 &1321422462
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815882170506286213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2f11985d4b0f4254cb896598708302a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  DashPerformed:
+    m_PersistentCalls:
+      m_Calls: []
+  dashCD: 3
+--- !u!114 &1321422463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815882170506286213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b01a0bb18e10dea428f9db7d885ff2c3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  dashSpeed: 20
+  dashDuration: 0.15
+  OnDashStart:
+    m_PersistentCalls:
+      m_Calls: []
+  OnDashEnd:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &884289349429918943
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815882170506286213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b5b92d0b024d2f4fa1aea27304cfbd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 6815882170506286201}
+  key: 280
+  rightClick: 1
+  animTrigger: Secondary
+  OnActionPerfomed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnActionCancled:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &4664815340018759102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815882170506286213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b5b92d0b024d2f4fa1aea27304cfbd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 6815882170506286201}
+  key: 113
+  rightClick: 0
+  animTrigger: Tertiary
+  OnActionPerfomed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnActionCancled:
+    m_PersistentCalls:
+      m_Calls: []
+--- !u!114 &394987627602205651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6815882170506286213}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8b5b92d0b024d2f4fa1aea27304cfbd6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  anim: {fileID: 6815882170506286201}
+  key: 304
+  rightClick: 0
+  animTrigger: Utility
+  OnActionPerfomed:
+    m_PersistentCalls:
+      m_Calls: []
+  OnActionCancled:
+    m_PersistentCalls:
+      m_Calls: []
 --- !u!1001 &6815882169442142371
 PrefabInstance:
   m_ObjectHideFlags: 0

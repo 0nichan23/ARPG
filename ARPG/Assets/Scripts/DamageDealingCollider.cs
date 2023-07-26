@@ -9,6 +9,7 @@ public class DamageDealingCollider : MonoBehaviour
     [SerializeField] private bool blink = true;
     [SerializeField] private int activeFrames;
     public UnityEvent OnHit;
+    public UnityEvent OnTurnedOff;
     private AttackData currentAttack;
     public bool blocked;
 
@@ -39,6 +40,7 @@ public class DamageDealingCollider : MonoBehaviour
             counter++;
             yield return new WaitForEndOfFrame();
         }
+        OnTurnedOff?.Invoke();
         gameObject.SetActive(false);
     }
 

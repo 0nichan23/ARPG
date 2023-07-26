@@ -4,10 +4,10 @@ using UnityEngine;
 public class PlayerWrapper : Character
 {
     [SerializeField] private PrimaryAttackHandler playerPrimaryAttackHandler;
-    [SerializeField] private SecondaryAttackHandler playerSecondaryAttackHandler;
-    [SerializeField] private TertiaryAttackHandler playerTertiaryAttackHandler;
+    [SerializeField] private PlayerActionHandler secondaryHandler;
+    [SerializeField] private PlayerActionHandler tertiaryHandler;
+    [SerializeField] private PlayerActionHandler utilityHandler;
     [SerializeField] private DashHandler playerDashHandler;
-    [SerializeField] private UtilityHandler playerUtilityHandler;
     [SerializeField] private BasePlayerClass currentClass;
     [SerializeField] private Animator playerAnim;
     [SerializeField] private TopDownWASDController controller;
@@ -16,14 +16,14 @@ public class PlayerWrapper : Character
     public bool CanAttack = true;
     public bool CanDash = true;
     public PrimaryAttackHandler PlayerPrimaryAttackHandler { get => playerPrimaryAttackHandler; }
-    public SecondaryAttackHandler PlayerSecondaryAttackHandler { get => playerSecondaryAttackHandler; }
-    public TertiaryAttackHandler PlayerTertiaryAttackHandler { get => playerTertiaryAttackHandler; }
-    public UtilityHandler PlayerUtilityHandler { get => playerUtilityHandler; }
     public BasePlayerClass CurrentClass { get => currentClass; }
     public Animator PlayerAnim { get => playerAnim; }
     public PlayerHud PlayerHud { get => playerHud; }
     public TopDownWASDController Controller { get => controller; }
     public DashHandler PlayerDashHandler { get => playerDashHandler; }
+    public PlayerActionHandler SecondaryHandler { get => secondaryHandler; }
+    public PlayerActionHandler TertiaryHandler { get => tertiaryHandler; }
+    public PlayerActionHandler UtilityHandler { get => utilityHandler; }
 
     protected override void Awake()
     {
@@ -66,6 +66,8 @@ public class PlayerWrapper : Character
     {
         Stats.AddCritHit(150);
         Stats.AddCritDamage(150);
+        Stats.AddCDR(200);
+        Stats.AddManaCostDiscount(200);
     }
 
 }

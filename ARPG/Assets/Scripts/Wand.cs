@@ -3,6 +3,7 @@ using UnityEngine;
 
 public class Wand : BasePlayerWeapon
 {
+    [SerializeField] private AttackData mineAttack;
     [SerializeField] private DamageDealingCollider secondaryAttackCollider;
     [SerializeField] private ElementalObjectHandler secondaryEffect;
     [SerializeField] private ElementalObjectHandler tertiaryEffect;
@@ -10,6 +11,7 @@ public class Wand : BasePlayerWeapon
     [SerializeField] private Transform blastPoint;
     [SerializeField] private LayerMask tertiaryLayer;
     [SerializeField] private float tertiaryIntervals;
+    [SerializeField] private Transform minePlace;
     private float lastTertiaryTick;
     private bool tertiaryDown;
     public override void Primary()
@@ -36,11 +38,11 @@ public class Wand : BasePlayerWeapon
     public override void CacheWeaponOnHandlers()
     {
         GameManager.Instance.PlayerWrapper.PlayerPrimaryAttackHandler.CacheWeaponData(PrimaryCombo);
-        GameManager.Instance.PlayerWrapper.PlayerSecondaryAttackHandler.CacheWeaponData(secondaryAttack, secondaryAttackCollider);
-        GameManager.Instance.PlayerWrapper.PlayerTertiaryAttackHandler.CacheWeaponData(tertiaryAttack);
-        GameManager.Instance.PlayerWrapper.PlayerTertiaryAttackHandler.OnTertiaryAttackPerformed.AddListener(() => tertiaryDown = true);
-        GameManager.Instance.PlayerWrapper.PlayerTertiaryAttackHandler.OnTeritiaryCanceled.AddListener(() => tertiaryDown = false);
-        GameManager.Instance.PlayerWrapper.PlayerUtilityHandler.CacheWeaponData();
+        GameManager.Instance.PlayerWrapper.SecondaryHandler.CacheWeaponData(secondaryAttack, secondaryAttackCollider);
+        GameManager.Instance.PlayerWrapper.TertiaryHandler.CacheWeaponData(tertiaryAttack);
+        GameManager.Instance.PlayerWrapper.TertiaryHandler.OnActionPerfomed.AddListener(() => tertiaryDown = true);
+        GameManager.Instance.PlayerWrapper.TertiaryHandler.OnActionCancled.AddListener(() => tertiaryDown = false);
+        GameManager.Instance.PlayerWrapper.UtilityHandler.CacheWeaponData(mineAttack);
     }
 
     public override void Tertiary()
@@ -75,7 +77,7 @@ public class Wand : BasePlayerWeapon
                 Vector3 maxVector = blastPoint.position + (direction * tertiaryRange);
                 ej.renderer.SetPosition(1, maxVector);
             }
-            if (!GameManager.Instance.PlayerWrapper.ManaHandler.CheckManaAvailable(attack.ManaCost))
+            if (!GameManager.Instance.PlayerWrapper.ManaHandler.CheckManaAvailable(Mathf.RoundToInt(tertiaryAttack.ManaCost * GameManager.Instance.PlayerWrapper.Stats.ManaCostDiscount())))
             {
                 break;
             }
@@ -85,4 +87,24 @@ public class Wand : BasePlayerWeapon
         GameManager.Instance.PlayerWrapper.Controller.movementEnabled = true;
         GameManager.Instance.PlayerWrapper.PlayerAnim.SetTrigger("BeamDone");
     }
+
+    public override void Utility()
+    {
+        base.Utility();
+        Mine mine = GameManager.Instance.ObjectPoolsHandler.MinePool.GetPooledObject();
+        mine.transform.position = minePlace.position;
+        mine.CacheOwner(GameManager.Instance.PlayerWrapper, mineAttack);
+        mine.OnDetonate.AddListener(ElementalExplosion);
+        mine.gameObject.SetActive(true);
+    }
+
+    private void ElementalExplosion(Mine mine)
+    {
+        ElementalObjectHandler handler = GameManager.Instance.ObjectPoolsHandler.ExplosionsPool.GetPooledObject();
+        handler.transform.position = mine.transform.position;
+        handler.gameObject.SetActive(true);
+        handler.ElementalObjectOn(Element);
+
+    }
+
 }

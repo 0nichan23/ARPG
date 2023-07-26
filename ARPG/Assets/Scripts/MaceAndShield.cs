@@ -36,13 +36,12 @@ public class MaceAndShield : BasePlayerWeapon
     public override void CacheWeaponOnHandlers()
     {
         GameManager.Instance.PlayerWrapper.PlayerPrimaryAttackHandler.CacheWeaponData(PrimaryCombo, PrimaryCollider);
-        GameManager.Instance.PlayerWrapper.PlayerSecondaryAttackHandler.CacheWeaponData(secondaryAttack, SecondarCollider);
-        GameManager.Instance.PlayerWrapper.PlayerTertiaryAttackHandler.CacheWeaponData(tertiaryAttack);
-        GameManager.Instance.PlayerWrapper.PlayerUtilityHandler.CacheWeaponData();
-        GameManager.Instance.PlayerWrapper.PlayerUtilityHandler.OnUtilityPerformed.AddListener(UtilityOn);
-        GameManager.Instance.PlayerWrapper.PlayerUtilityHandler.OnUtilityUp.AddListener(UtilityOff);
+        GameManager.Instance.PlayerWrapper.SecondaryHandler.CacheWeaponData(secondaryAttack, SecondarCollider);
+        GameManager.Instance.PlayerWrapper.TertiaryHandler.CacheWeaponData(tertiaryAttack);
+        GameManager.Instance.PlayerWrapper.UtilityHandler.CacheWeaponData();
+        GameManager.Instance.PlayerWrapper.UtilityHandler.OnActionPerfomed.AddListener(UtilityOn);
+        GameManager.Instance.PlayerWrapper.UtilityHandler.OnActionCancled.AddListener(UtilityOff);
     }
-
 
     public override void Tertiary()
     {

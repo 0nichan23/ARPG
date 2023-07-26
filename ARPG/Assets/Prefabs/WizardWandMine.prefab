@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1162600522279756914}
   - component: {fileID: 3827857687660678862}
   - component: {fileID: 4069574894336189191}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Bomb
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -60,10 +60,25 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   owner: {fileID: 0}
   blink: 1
-  activeFrames: 10
+  activeFrames: 25
   OnHit:
     m_PersistentCalls:
       m_Calls: []
+  OnTurnedOff:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 5604654032494495275}
+        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
+        m_MethodName: SetActive
+        m_Mode: 6
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
   blocked: 0
 --- !u!1 &5604654032494495275
 GameObject:
@@ -77,8 +92,9 @@ GameObject:
   - component: {fileID: 8704758586095220796}
   - component: {fileID: 7306266575402522988}
   - component: {fileID: 7019571516954230355}
-  m_Layer: 0
-  m_Name: Plane
+  - component: {fileID: 1127418499}
+  m_Layer: 8
+  m_Name: WizardWandMine
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -163,3 +179,19 @@ BoxCollider:
   serializedVersion: 2
   m_Size: {x: 10, y: 2.948055, z: 10}
   m_Center: {x: 0, y: 1.2754582, z: 0}
+--- !u!114 &1127418499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5604654032494495275}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d793f1963b32d1845af05d41ebbb4575, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  damageCollider: {fileID: 4069574894336189191}
+  OnDetonate:
+    m_PersistentCalls:
+      m_Calls: []
